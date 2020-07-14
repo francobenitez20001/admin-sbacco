@@ -1,7 +1,9 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 const TablaProductos = (props) => {
     return (
+        (!props.productos)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
         <>
             <h3 className="my-4 ml-2">Tabla de administración de productos</h3>
             <table className="table text-center">
@@ -13,26 +15,26 @@ const TablaProductos = (props) => {
                     <th scope="col">Precio</th>
                     <th scope="col">Estado</th>
                     <th scope="col" className="text-center">
-                        <button type="button" className="btn btn-outline-info">Agregar</button>
+                        <Link to="/propiedad/add" className="btn btn-outline-info">Agregar</Link>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th>d</th>
-                    <td>d</td>
-                    <td>d</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td className="text-center">
-                        <button type="button" className="ml-2 btn btn-outline-warning">Modificar</button>
-                        <button type="button" onClick={()=>props.eliminarPropiedad(1)} className="ml-2 btn btn-outline-danger">Eliminar</button>
-                    </td>
-                </tr>
+                    {props.productos.map(propiedad=>(
+                        <tr key={propiedad.id}>
+                            <th>{propiedad.localidad}</th>
+                            <td>{propiedad.categoria}</td>
+                            <td>{propiedad.operacion}</td>
+                            <td>{propiedad.precio}</td>
+                            <td>{propiedad.estado}</td>
+                            <td className="text-center">
+                                <Link to={{pathname:`/propiedad/edit/${propiedad.idCasa}`}} className="ml-2 btn btn-outline-warning">Modificar</Link>
+                                <button type="button" onClick={()=>props.eliminarPropiedad(propiedad.idCasa)} className="ml-2 btn btn-outline-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
-
-            <div className="alert alert-warning text-center">No hay registros cargados</div>
         </>
     );
 }
