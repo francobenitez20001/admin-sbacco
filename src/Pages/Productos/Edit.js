@@ -4,6 +4,7 @@ import Loader from '../../components/Loader/Loader';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import {API} from '../../config';
+import  { Redirect } from 'react-router-dom'
 const MySwal = withReactContent(Swal)
 
 const EditPropiedad = (props) => {
@@ -160,7 +161,9 @@ const EditPropiedad = (props) => {
                     'Datos modificados!',
                     res.info,
                     'success'
-                );
+                ).then(()=>{
+                    props.history.push('/productos')
+                });
             })
         };
     }
