@@ -1,7 +1,8 @@
 import React from 'react';
-
+import {Link} from 'react-router-dom';
 const TablaCategorias = (props) => {
     return (
+        (!props.categorias)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
         <>
             <h3 className="my-4 ml-2">Tabla de administración de categorias</h3>
             <table className="table text-center">
@@ -10,23 +11,23 @@ const TablaCategorias = (props) => {
                     <th scope="col">#</th>
                     <th scope="col">Categoria</th>
                     <th scope="col" className="text-center">
-                        <button type="button" className="btn btn-outline-info">Agregar</button>
+                        <Link to="/categoria/add" className="btn btn-outline-info">Agregar</Link>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>d</td>
-                    <td>d</td>
-                    <td classname="text-center">
-                        <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
-                        <button type="button" className=" ml-2 btn btn-outline-danger">Eliminar</button>
-                    </td>
-                </tr>
+                    {props.categorias.map(cat=>(
+                        <tr key={cat.id}>
+                            <td>{cat.id}</td>
+                            <td>{cat.categoria}</td>
+                            <td className="text-center">
+                                <Link to={{pathname:`/categoria/edit/${cat.id}`}} className=" ml-2 btn btn-outline-warning">Modificar</Link>
+                                <button type="button" onClick={()=>props.eliminarCategoria(cat.id)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
-
-            <div className="alert alert-warning text-center">No hay registros cargados</div>
         </>
     );
 }

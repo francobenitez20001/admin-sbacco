@@ -16,15 +16,17 @@ const TablaUbicaciones = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>asd</td>
-                    <td>asd</td>
-                    <td className="text-center">
-                        <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
-                        <button type="button" onClick={()=>props.eliminarUbicacion(1)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
-                    </td>
-                </tr>
+                    {props.ubicaciones.map(ubicacion=>(
+                        <tr key={ubicacion.id}>
+                            <th>{ubicacion.id}</th>
+                            <td>{ubicacion.partido}</td>
+                            <td>{ubicacion.localidad}</td>
+                            <td className="text-center">
+                                <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
+                                <button type="button" onClick={()=>props.eliminarUbicacion(1)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>

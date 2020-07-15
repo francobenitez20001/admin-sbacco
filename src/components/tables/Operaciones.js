@@ -14,14 +14,16 @@ const TablaOperaciones = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>asd</td>
-                    <td className="text-center">
-                        <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
-                        <button type="button" onClick={()=>props.eliminarOperacion(1)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
-                    </td>
-                </tr>
+                    {props.operaciones.map(op=>(
+                        <tr key={op.id}>
+                            <th>{op.id}</th>
+                            <td>{op.operacion}</td>
+                            <td className="text-center">
+                                <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
+                                <button type="button" onClick={()=>props.eliminarOperacion(op.id)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>

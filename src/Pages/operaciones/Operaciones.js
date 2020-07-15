@@ -2,6 +2,8 @@ import React,{useEffect,useState} from 'react';
 import TablaOperaciones from '../../components/tables/Operaciones';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import {API} from '../../config'
+import Loader from '../../components/Loader/Loader';
 
 const MySwal = withReactContent(Swal)
 
@@ -9,8 +11,15 @@ const Operaciones = () => {
     const [operaciones, setOperaciones] = useState(undefined);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        setLoading(false);
+        getOperaciones();
     }, [])
+    
+    const getOperaciones = async()=>{
+        fetch(`${API}/operaciones`).then(res=>res.json()).then(data=>{
+            setOperaciones(data.data);
+            setLoading(false);
+        }).catch(err=>console.error(err))
+    }
 
     const eliminarOperacion = id=>{
         MySwal.fire({
@@ -33,7 +42,7 @@ const Operaciones = () => {
     }
 
     return (
-        (loading)?null:
+        (loading)?<Loader/>:
         <TablaOperaciones
             operaciones={operaciones}
             eliminarOperacion={eliminarOperacion}/>
