@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 const TablaOperaciones = (props) => {
     return (
         <>
@@ -9,7 +10,7 @@ const TablaOperaciones = (props) => {
                     <th scope="col">#</th>
                     <th scope="col">Tipo</th>
                     <th scope="col" className="text-center">
-                        <button type="button" className="btn btn-outline-info">Agregar</button>
+                        <Link to="/operacion/add" className="btn btn-outline-info">Agregar</Link>
                     </th>
                 </tr>
                 </thead>
@@ -19,7 +20,7 @@ const TablaOperaciones = (props) => {
                             <th>{op.id}</th>
                             <td>{op.operacion}</td>
                             <td className="text-center">
-                                <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
+                                <Link to={{pathname:`/operacion/edit/${op.id}`}} className=" ml-2 btn btn-outline-warning">Modificar</Link>
                                 <button type="button" onClick={()=>props.eliminarOperacion(op.id)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
                             </td>
                         </tr>

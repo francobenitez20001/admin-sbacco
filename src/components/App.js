@@ -14,6 +14,9 @@ import EditPropiedad from '../Pages/Productos/Edit';
 import NewCategoria from '../Pages/categorias/New';
 import EditCategoria from '../Pages/categorias/Edit';
 
+import NewOperacion from '../Pages/operaciones/New';
+import EditOperacion from '../Pages/operaciones/Edit';
+
 const App = () => {
     return (
         <BrowserRouter>
@@ -29,6 +32,8 @@ const App = () => {
                     <Route exact path="/propiedad/edit/:id" component={EditPropiedad}/>
                     <Route exact path="/categoria/add" component={NewCategoria}/>
                     <Route exact path="/categoria/edit/:id" component={EditCategoria}/>
+                    <Route exact path="/operacion/add" component={NewOperacion}/>
+                    <Route exact path="/operacion/edit/:id" component={EditOperacion}/>
                 </Switch>
             </Layout>
         </BrowserRouter>

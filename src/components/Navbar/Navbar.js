@@ -11,13 +11,13 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/productos">Prooductos <span className="sr-only">(current)</span></Link>
+                        <Link className="nav-link" to="/productos">Productos <span className="sr-only">(current)</span></Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/categorias">Categorias</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/ubicaciones">Ubicaciones</Link>
+                        <Link className="nav-link disabled" aria-disabled="true" to="/ubicaciones">Ubicaciones</Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/operaciones">Operaciones</Link>

@@ -32,11 +32,15 @@ const Operaciones = () => {
             confirmButtonText: 'Eliminar!',
           }).then((result) => {
             if (result.value) {
-                Swal.fire(
-                    'Eliminado!',
-                    'ssss',
-                    'success'
-                ) 
+                fetch(`${API}/borrar_operacion/${id}/ZAQ12wsx`,{method:'DELETE'}).then(res=>res.json()).then(res=>{
+                    Swal.fire(
+                        'Eliminado!',
+                        res.info,
+                        'success'
+                    ).then(()=>{
+                        getOperaciones();
+                    }) 
+                })
             }
         })
     }
