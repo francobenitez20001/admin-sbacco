@@ -7,6 +7,7 @@ import Productos from '../Pages/Productos/Productos';
 import Categorias from '../Pages/categorias/Categorias';
 import Ubicaciones from '../Pages/ubicaciones/Ubicaciones';
 import Operaciones from '../Pages/operaciones/Operaciones';
+import Nosotros from '../Pages/nosotros/Nosotros';
 
 import NewPropiedad from '../Pages/Productos/New';
 import EditPropiedad from '../Pages/Productos/Edit';
@@ -16,6 +17,8 @@ import EditCategoria from '../Pages/categorias/Edit';
 
 import NewOperacion from '../Pages/operaciones/New';
 import EditOperacion from '../Pages/operaciones/Edit';
+
+import EditNosotros from '../Pages/nosotros/Edit';
 
 const App = () => {
     return (
@@ -27,7 +30,8 @@ const App = () => {
                     <Route exact path="/categorias" component={Categorias}/>
                     <Route exact path="/ubicaciones" component={Ubicaciones}/>
                     <Route exact path="/operaciones" component={Operaciones}/>
-                    <Route exact path="/quienes-somos" component={Home}/>
+                    <Route exact path="/nosotros" component={Nosotros}/>
+                    <Route exact path="/nosotros/modificar/:id" component={EditNosotros}/>
                     <Route exact path="/propiedad/add" component={NewPropiedad}/>
                     <Route exact path="/propiedad/edit/:id" component={EditPropiedad}/>
                     <Route exact path="/categoria/add" component={NewCategoria}/>
