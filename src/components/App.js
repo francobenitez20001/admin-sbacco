@@ -23,17 +23,22 @@ import EditOperacion from '../Pages/operaciones/Edit';
 
 import EditNosotros from '../Pages/nosotros/Edit';
 
+import Partidos from '../Pages/Partidos/Partidos';
+import NewPartido from '../Pages/Partidos/New';
+import EditPartido from '../Pages/Partidos/Edit';
+
 const App = () => {
     return (
         <BrowserRouter>
             <Layout>
                 <Switch>
                     <Route exact path="/" component={Home}/>
-                    <Route exact path="/productos" component={Productos}/>
+                    <Route exact path="/propiedades" component={Productos}/>
                     <Route exact path="/categorias" component={Categorias}/>
                     <Route exact path="/ubicaciones" component={Ubicaciones}/>
                     <Route exact path="/operaciones" component={Operaciones}/>
                     <Route exact path="/nosotros" component={Nosotros}/>
+                    <Route exact path="/partidos" component={Partidos}/>
                     <Route exact path="/nosotros/modificar/:id" component={EditNosotros}/>
                     <Route exact path="/propiedad/add" component={NewPropiedad}/>
                     <Route exact path="/propiedad/edit/:id" component={EditPropiedad}/>
@@ -43,6 +48,8 @@ const App = () => {
                     <Route exact path="/ubicacion/edit/:id" component={EditUbicacion}/>
                     <Route exact path="/operacion/add" component={NewOperacion}/>
                     <Route exact path="/operacion/edit/:id" component={EditOperacion}/>
+                    <Route exact path="/partido/add" component={NewPartido}/>
+                    <Route exact path="/partido/edit/:id" component={EditPartido}/>
                 </Switch>
             </Layout>
         </BrowserRouter>

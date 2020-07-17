@@ -5,7 +5,7 @@ const TablaProductos = (props) => {
     return (
         (!props.productos)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
         <>
-            <h3 className="my-4 ml-2">Tabla de administración de productos</h3>
+            <h3 className="my-4 ml-2">Tabla de administración de propiedades</h3>
             <table className="table text-center">
                 <thead className="thead-dark">
                 <tr>
