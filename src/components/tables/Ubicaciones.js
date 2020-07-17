@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {Link} from 'react-router-dom'
 const TablaUbicaciones = (props) => {
     return (
         <>
@@ -11,7 +11,7 @@ const TablaUbicaciones = (props) => {
                     <th scope="col">Partido</th>
                     <th scope="col">Localidad</th>
                     <th scope="col" className="text-center">
-                        <button type="button" className="btn btn-outline-info">Agregar</button>
+                        <Link to="/ubicacion/add" className="btn btn-outline-info">Agregar</Link>
                     </th>
                 </tr>
                 </thead>
@@ -22,8 +22,7 @@ const TablaUbicaciones = (props) => {
                             <td>{ubicacion.partido}</td>
                             <td>{ubicacion.localidad}</td>
                             <td className="text-center">
-                                <button type="button" className=" ml-2 btn btn-outline-warning">Modificar</button>
-                                <button type="button" onClick={()=>props.eliminarUbicacion(1)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
+                                <Link to={{pathname:`/ubicacion/edit/${ubicacion.id}`}} className=" ml-2 btn btn-outline-warning">Modificar</Link>
                             </td>
                         </tr>
                     ))}

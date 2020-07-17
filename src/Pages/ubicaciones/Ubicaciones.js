@@ -21,31 +21,10 @@ const Ubicaciones = () => {
         }).catch(err=>console.error(err))
     }
 
-    const eliminarUbicacion = id=>{
-        MySwal.fire({
-            title: '¿Desea eliminar la ubicacion?',
-            text: "Esta acción no se puede deshacer",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar!',
-          }).then((result) => {
-            if (result.value) {
-                Swal.fire(
-                    'Eliminado!',
-                    'ssss',
-                    'success'
-                ) 
-            }
-        })
-    }
-
     return (
         (loading)?<Loader/>:
         <TablaUbicaciones
-            ubicaciones={ubicaciones}
-            eliminarUbicacion={eliminarUbicacion}/>
+            ubicaciones={ubicaciones}/>
     );
 }
  

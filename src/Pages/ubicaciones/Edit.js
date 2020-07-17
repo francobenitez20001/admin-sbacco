@@ -2,24 +2,40 @@ import React,{useState,useEffect} from 'react';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
-import FormAddUbicacion from '../../components/forms/formAddUbicacion'
+import FormEditUbicacion from '../../components/forms/formEditUbicacion';
 
-const NewUbicacion = (props) => {
+const EditUbicacion = (props) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [partidos, setPartidos] = useState(undefined);
-    const [formValues, setFormValues] = useState({
-        idPartido:'1',
-        localidad:'',
-        pass: "ZAQ12wsx"
-    });
+    const [formValues, setFormValues] = useState(undefined);
 
     useEffect(() => {
-        getPartidos();
+        getDatos();
     }, [])
 
+    const getDatos = async ()=>{
+        try {
+            await getLocalidad();
+            await getPartidos();
+        } catch (error) {
+            
+        }
+    }
+
+    const getLocalidad = async()=>{
+        return fetch(`${API}/buscar_ubicacion/${props.match.params.id}`).then(res=>res.json()).then(data=>{
+            return setFormValues({
+                idPartido:data.data[0].idPartido,
+                localidad:data.data[0].localidad,
+                pass:'ZAQ12wsx',
+                id:props.match.params.id
+            });
+        })
+    }
+
     const getPartidos = async()=>{
-        fetch(`${API}/partidos`).then(res=>res.json()).then(data=>{
+        fetch(`${API}/partidos`).then(res=>res.json()).then(async data=>{
             setPartidos(data.data);
             setLoading(false);
         }).catch(err=>console.error(err))
@@ -45,8 +61,8 @@ const NewUbicacion = (props) => {
         event.preventDefault();
         if(verificar(formValues)){
             setLoading(true);
-            fetch(`${API}/insertar_ubicacion`,{
-                method:'POST',
+            fetch(`${API}/modificar_ubicacion`,{
+                method:'PUT',
                 body:JSON.stringify(formValues),
                 headers:{'Content-Type':'application/json'}
             }).then(res=>res.json()).then(res=>{
@@ -54,14 +70,14 @@ const NewUbicacion = (props) => {
                 setLoading(false);
                 if(!res.status){
                     Swal.fire(
-                        'Problemas al agregar la ubicación',
-                        '',
+                        'Ops',
+                        'Problemas al modificar la ubicación',
                         'error'
                     );
                     return;
                 };
                 Swal.fire(
-                    'Ubicación agregada!',
+                    'Ubicación modificada!',
                     res.info,
                     'success'
                 ).then(()=>{
@@ -70,9 +86,10 @@ const NewUbicacion = (props) => {
             })
         }
     }
+
     return (
         (loading)?<Loader/>:
-        <FormAddUbicacion
+        <FormEditUbicacion
             formValues={formValues}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
@@ -81,4 +98,4 @@ const NewUbicacion = (props) => {
     );
 }
  
-export default NewUbicacion;
+export default EditUbicacion;

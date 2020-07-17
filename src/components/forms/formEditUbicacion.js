@@ -1,8 +1,8 @@
 import React from 'react';
-const FormAddUbicacion = (props) => {
+const FormEditUbicacion = (props) => {
     return (
         <div className="container mt-5">
-            <h3>Formulario de nueva ubicación</h3>
+            <h3>Formulario de modificacion de una ubicación</h3>
             <br/>
             <form className="form-group" onSubmit={props.handleSubmit}>
                 <div className="row">
@@ -23,4 +23,4 @@ const FormAddUbicacion = (props) => {
     );
 }
  
-export default FormAddUbicacion;
+export default FormEditUbicacion;
