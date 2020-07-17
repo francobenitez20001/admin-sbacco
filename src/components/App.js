@@ -27,6 +27,9 @@ import Partidos from '../Pages/Partidos/Partidos';
 import NewPartido from '../Pages/Partidos/New';
 import EditPartido from '../Pages/Partidos/Edit';
 
+import Contacto from '../Pages/Contacto/Contacto';
+import EditContacto from '../Pages/Contacto/Edit';
+
 const App = () => {
     return (
         <BrowserRouter>
@@ -50,6 +53,8 @@ const App = () => {
                     <Route exact path="/operacion/edit/:id" component={EditOperacion}/>
                     <Route exact path="/partido/add" component={NewPartido}/>
                     <Route exact path="/partido/edit/:id" component={EditPartido}/>
+                    <Route exact path="/contacto" component={Contacto}/>
+                    <Route exact path="/contacto/edit/:id" component={EditContacto}/>
                 </Switch>
             </Layout>
         </BrowserRouter>

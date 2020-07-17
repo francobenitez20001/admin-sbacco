@@ -10,7 +10,7 @@ const Home = () => {
                 <Link to="/ubicaciones" className="list-group-item list-group-item-action">Administrá tus ubicaciones</Link>
                 <Link to="/partidos" className="list-group-item list-group-item-action">Administrá partidos</Link>
                 <Link to="/nosotros" className="list-group-item list-group-item-action">Quiénes Sómos</Link>
-                <Link yo="/contacto" className="list-group-item list-group-item-action">Datos de contacto</Link>
+                <Link to="/contacto" className="list-group-item list-group-item-action">Datos de contacto</Link>
             </div>
         </div>
     );
