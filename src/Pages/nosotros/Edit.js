@@ -16,7 +16,7 @@ const EditNosotros = (props) => {
 
     const getDatos=async()=>{
         try {
-            fetch(`${API}/quienes_somos`).then(res=>res.json()).then(data=>{
+            fetch(`${API}/nosotros`).then(res=>res.json()).then(data=>{
                 setNosotros(data.data[0]);
                 setFormValues({
                     pass:'ZAQ12wsx',
@@ -49,7 +49,7 @@ const EditNosotros = (props) => {
         event.preventDefault();
         if(verificar(formValues)){
             setLoading(true);
-            fetch(`${API}/quienes_somos_modificar`,{
+            fetch(`${API}/nosotros/quienes_somos_modificar`,{
                 method:'PUT',
                 body:JSON.stringify(formValues),
                 headers:{'Content-Type':'application/json'}
