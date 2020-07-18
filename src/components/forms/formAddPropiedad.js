@@ -29,8 +29,18 @@ const FormAddPropiedad = (props) => {
                     <div className="col-12 col-md-6">
                         <br/>
                         Partido
+                        <select name="idPartido" className="form-control" onChange={props.handleChangePrincipal}>
+                            {props.partidos.map(partido=>(
+                                <option key={partido.id} value={partido.id}>{partido.partido}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="col-12 col-md-6">
+                        <br/>
+                        Localidades
                         <select name="idLocalidad" className="form-control" onChange={props.handleChangePrincipal}>
-                            {props.localidades.map(localidad=>(
+                            <option value="">Selecciona localidad</option>
+                            {props.localidadesFiltradas.map(localidad=>(
                                 <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
                             ))}
                         </select>
@@ -53,6 +63,17 @@ const FormAddPropiedad = (props) => {
                             <option value="Disponible">Disponible</option>
                             <option value="Ocupado">Ocupado</option>
                             <option value="Reservado">Reservado</option>
+                        </select>
+                    </div>
+                    <div className="col-12 col-md-6 input-group mt-4">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Mostrar Estado en la publicación
+                            </div>
+                        </div>
+                        <select required name="mostrarEstado" className="form-control" id="" onChange={props.handleChangePrincipal}>
+                            <option value="si">Si</option>
+                            <option value="no">No</option>
                         </select>
                     </div>
                     <div className="col-12 col-md-6">
@@ -187,8 +208,24 @@ const FormAddPropiedad = (props) => {
                     <br/>
                     <input type="submit" className="btn btn-info" name="" style={{float: "right"}} value="Guardar y Continuar"/>
                     <br/><br/>
-                </form>
-            </div>
+            </form>
+            <form className="form-group d-none" id="form-header" encType="multipart/form-data" onSubmit={props.handleSubmitHeader}>
+                <label>Selecciona la imágen principal de la propiedad</label>
+                <br/>
+                <input type="file" required name="header"/>
+                <input type="hidden" name="idCasa" id="input-header-idcasa" value=""/>
+                <input type="hidden" name="pass" value="ZAQ12wsx"/>
+                <input type="submit" style={{float:"right"}} className="btn btn-info" value="Cargar"/>
+            </form>
+            <form className="form-group d-none" id="form-imagenes" onSubmit={props.handleSubmitImagenes}>
+                <label>Selecciona el resto de las imagenes</label>
+                <br/>
+                <input type="file" required multiple name="imagenes"/>
+                <input type="hidden" name="idCasa" id="input-imagenes-idcasa" value=""/>
+                <input type="hidden" name="pass" value="ZAQ12wsx"/>
+                <input type="submit" style={{float:"right"}} className="btn btn-info" value="Cargar"/>
+            </form>
+        </div>
     );
 }
  

@@ -2,21 +2,26 @@ import React,{useEffect,useState} from 'react';
 import FormAddPropiedad from '../../components/forms/formAddPropiedad';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
+import Swal from 'sweetalert2';
 
 const NewPropiedad = (props) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [categorias, setCategorias] = useState(undefined);
     const [localidades, setLocalidades] = useState(undefined);
+    const [localidadesFiltradas, setLocalidadesFiltradas] = useState(undefined);
     const [operaciones, setOperaciones] = useState(undefined);
+    const [partidos, setPartidos] = useState(undefined);
     const [formDatosPrincipalesValues, setFormDatosPrincipalesValues] = useState({
         idCategoria:"1",
         idOperacion:"1",
+        idPartido:"1",
         idLocalidad:"1",
         direccion:"",
         descripcion:"",
         precio:"",
         estado:"Disponible",
+        mostrarEstado:"si",
         moneda:"dolar",
         pass:"ZAQ12wsx"    
     });
@@ -49,6 +54,7 @@ const NewPropiedad = (props) => {
         try {
             await getCategorias();
             await getLocalidades();
+            await getPartidos();
             await getOperaciones();
         } catch (error) {
             console.log(error);
@@ -56,29 +62,45 @@ const NewPropiedad = (props) => {
     }
 
     const getCategorias = async()=>{
-        fetch(`${API}/categorias`).then(res=>res.json()).then(data=>{
+        await fetch(`${API}/categorias`).then(res=>res.json()).then(data=>{
             setCategorias(data.data);
         }).catch(err=>console.error(err))
     }
 
     const getLocalidades = async()=>{
-        fetch(`${API}/ubicaciones`).then(res=>res.json()).then(data=>{
+        await fetch(`${API}/ubicaciones`).then(res=>res.json()).then(data=>{
             setLocalidades(data.data);
+            setLocalidadesFiltradas(data.data.filter(res=>res.idPartido == formDatosPrincipalesValues.idPartido));
         }).catch(err=>console.error(err))
     }
 
+    const getPartidos = async()=>{
+        await fetch(`${API}/partidos`).then(res=>res.json()).then(data=>{
+            setPartidos(data.data);
+        })
+    }
+
     const getOperaciones = async()=>{
-        fetch(`${API}/operaciones`).then(res=>res.json()).then(data=>{
+        await fetch(`${API}/operaciones`).then(res=>res.json()).then(data=>{
             setOperaciones(data.data);
             setLoading(false);
         }).catch(err=>console.error(err))
     }
 
     const handleChangePrincipal = event=>{
+        if(event.target.name === 'idPartido'){
+            //traigo las localidades de ese partido
+            filtrarLocalidadPorPartido(event.target.value);
+        }
         setFormDatosPrincipalesValues({
             ...formDatosPrincipalesValues,
             [event.target.name]:event.target.value
         })
+    }
+
+    const filtrarLocalidadPorPartido = idPartido=>{
+        let localidadesFiltradas = localidades.filter(res=>res.idPartido == idPartido);
+        return setLocalidadesFiltradas(localidadesFiltradas);
     }
 
     const handleChangeTecnico = event=>{
@@ -98,24 +120,147 @@ const NewPropiedad = (props) => {
     const handleSubmitPrincipal = (event)=>{
         event.preventDefault();
         if(validar(formDatosPrincipalesValues,'principal')){
-            document.getElementById('form-principal').classList.add('d-none');
-            document.getElementById('form-tecnico').classList.remove('d-none');
+            setLoading(true);
+            fetch(`${API}/insertar_inmueble`,{
+                method:'POST',
+                body:JSON.stringify(formDatosPrincipalesValues),
+                headers:{'Content-Type':'application/json'}
+            }).then(res=>res.json()).then(response=>{
+                setLoading(false);
+                if(!response.status){
+                    Swal.fire(
+                        'Ups!',
+                        'Error al insertar la propiedad',
+                        'error'
+                    );
+                    return;
+                }
+                setFormDatosTecnicosValues({...formDatosTecnicosValues,idCasa:response.data[0].id});
+                setFormServiciosValues({...formServiciosValues,idCasa:response.data[0].id});
+                Swal.fire(
+                    'Agregado!',
+                    'Ahora ingresa los datos técnicos',
+                    'success'
+                );
+                document.getElementById('form-principal').classList.add('d-none');
+                document.getElementById('form-tecnico').classList.remove('d-none');
+            })
         };
     }
 
     const handleSubmitTecnico = event=>{
         event.preventDefault();
         if(validar(formDatosTecnicosValues,'tecnico')){
-            document.getElementById('form-tecnico').classList.add('d-none');
-            document.getElementById('form-servicio').classList.remove('d-none');
+            setLoading(true);
+            fetch(`${API}/insertar_dato_tecnico`,{
+                method:'POST',
+                body:JSON.stringify(formDatosTecnicosValues),
+                headers:{'Content-Type':'application/json'}
+            }).then(res=>res.json()).then(response=>{
+                setLoading(false);
+                if(!response.status){
+                    Swal.fire(
+                        'Ups!',
+                        'Error al insertar el dato técnico',
+                        'error'
+                    );
+                    return;
+                }
+                Swal.fire(
+                    'Agregado!',
+                    'Ahora sigue con los servicios',
+                    'success'
+                );
+                document.getElementById('form-principal').classList.add('d-none');
+                document.getElementById('form-tecnico').classList.add('d-none');
+                document.getElementById('form-servicio').classList.remove('d-none');
+            })
         };
     }
 
     const handleSubmitServicio = event=>{
         event.preventDefault();
         if(validar(formServiciosValues,'servicio')){
-            console.log(formServiciosValues);
+            setLoading(true);
+            fetch(`${API}/insertar_servicio`,{
+                method:'POST',
+                body:JSON.stringify(formServiciosValues),
+                headers:{'Content-Type':'application/json'}
+            }).then(res=>res.json()).then(response=>{
+                setLoading(false);
+                if(!response.status){
+                    console.log(response);
+                    Swal.fire(
+                        'Ups!',
+                        'Error al insertar el servcio',
+                        'error'
+                    );
+                    return;
+                }
+                Swal.fire(
+                    'Agregado!',
+                    'Ahora sigue con la imagen principal!',
+                    'success'
+                );
+                document.getElementById('form-principal').classList.add('d-none');
+                document.getElementById('form-tecnico').classList.add('d-none');
+                document.getElementById('form-servicio').classList.add('d-none');
+                document.getElementById('form-header').classList.remove('d-none');
+            })
         };
+    }
+
+    const handleSubmitHeader = event=>{
+        event.preventDefault();
+        setLoading(true);
+        document.getElementById('input-header-idcasa').value = formServiciosValues.idCasa;
+        let file = new FormData(document.getElementById('form-header'));
+        console.log(file.get('idCasa'));
+        fetch(`${API}/insertar_imagen`,{
+            method:'POST',
+            body:file
+        }).then(res=>res.json()).then(response=>{
+            setLoading(false);
+            if(!response.status){
+                Swal.fire(
+                    'Ups..',
+                    'Problemas al subir la imagen',
+                    'error'
+                );
+                return;
+            };
+            Swal.fire(
+                'Listo!',
+                'Imagen Subida al servidor',
+                'success'
+            );
+            document.getElementById('form-principal').classList.add('d-none');
+            document.getElementById('form-tecnico').classList.add('d-none');
+            document.getElementById('form-servicio').classList.add('d-none');
+            document.getElementById('form-header').classList.add('d-none');
+            document.getElementById('form-imagenes').classList.remove('d-none');
+        })
+    };
+
+    const handleSubmitImagenes = event=>{
+        event.preventDefault();
+        document.getElementById('input-imagenes-idcasa').value = formServiciosValues.idCasa;
+        setLoading(true);
+        let files = new FormData(document.getElementById('form-imagenes'));
+        fetch(`${API}/imagenes-varios`,{
+            method:'POST',
+            body:files
+        }).then(res=>res.json()).then(response=>{
+            console.log(response);
+            setLoading(false);
+            Swal.fire(
+                'Listo!',
+                'Propiedad registrada satisfactoriamente',
+                'success'
+            ).then(()=>{
+                props.hisory.push('/propiedades');
+            });
+        })
     }
 
     const validar = (state,form)=>{
@@ -158,7 +303,9 @@ const NewPropiedad = (props) => {
         (loading)?<Loader/>:
         <FormAddPropiedad
             categorias={categorias}
+            partidos={partidos}
             localidades={localidades}
+            localidadesFiltradas={localidadesFiltradas}
             operaciones={operaciones}
             formDatosPrincipalesValues={formDatosPrincipalesValues}
             formDatosTecnicosValues={formDatosTecnicosValues}
@@ -168,7 +315,9 @@ const NewPropiedad = (props) => {
             handleChangeServicios={handleChangeServicios}
             handleSubmitPrincipal={handleSubmitPrincipal}
             handleSubmitTecnico={handleSubmitTecnico}
-            handleSubmitServicio={handleSubmitServicio}/>
+            handleSubmitServicio={handleSubmitServicio}
+            handleSubmitHeader={handleSubmitHeader}
+            handleSubmitImagenes={handleSubmitImagenes}/>
     );
 }
  
