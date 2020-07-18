@@ -12,10 +12,16 @@ const EditPropiedad = (props) => {
     const [error, setError] = useState(false);
     const [categorias, setCategorias] = useState(undefined);
     const [localidades, setLocalidades] = useState(undefined);
+    const [localidadesFiltradas, setLocalidadesFiltradas] = useState(undefined);
+    const [partidos, setpartidos] = useState(undefined);
     const [operaciones, setOperaciones] = useState(undefined);
+    const [propiedad, setPropiedad] = useState(undefined);
     const [formDatosPrincipalesValues, setFormDatosPrincipalesValues] = useState({});
     const [formDatosTecnicosValues, setFormDatosTecnicosValues] = useState({})
     const [formServiciosValues, setFormServiciosValues] = useState({});
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
 
     useEffect(() => {
         getDatos();
@@ -26,6 +32,7 @@ const EditPropiedad = (props) => {
             await getPropiedad();
             await getCategorias();
             await getLocalidades();
+            await getPartidos();
             await getOperaciones();
         } catch (error) {
             console.log(error);
@@ -35,14 +42,17 @@ const EditPropiedad = (props) => {
     const getPropiedad = async()=>{
         try {
             fetch(`${API}/detallar_inmueble_id/${props.match.params.id}`).then(res=>res.json()).then(data=>{
+                setPropiedad(data);
                 setFormDatosPrincipalesValues({
                     idCategoria:data.data[0].idCategoria,
                     idOperacion:data.data[0].idOperacion,
                     idLocalidad:data.data[0].idLocalidad,
+                    idPartido:data.data[0].idPartido,
                     direccion:data.data[0].direccion,
                     descripcion:data.data[0].descripcion,
                     precio:data.data[0].precio,
                     estado:data.data[0].estado,
+                    mostrarEstado:data.data[0].mostrarEstado,
                     moneda:data.data[0].moneda,
                     id:data.data[0].idCasa,
                     pass:"ZAQ12wsx"  
@@ -82,7 +92,14 @@ const EditPropiedad = (props) => {
     const getLocalidades = async()=>{
         fetch(`${API}/ubicaciones`).then(res=>res.json()).then(data=>{
             setLocalidades(data.data);
+            setLocalidadesFiltradas(data.data);
         }).catch(err=>console.error(err))
+    }
+
+    const getPartidos = async()=>{
+        return fetch(`${API}/partidos`).then(res=>res.json()).then(data=>{
+            setpartidos(data.data);
+        }).catch(console.error)
     }
 
     const getOperaciones = async()=>{
@@ -162,7 +179,7 @@ const EditPropiedad = (props) => {
                     res.info,
                     'success'
                 ).then(()=>{
-                    props.history.push('/productos')
+                    props.history.push('/propiedades')
                 });
             })
         };
@@ -204,12 +221,106 @@ const EditPropiedad = (props) => {
         return validation;
     }
 
+    const eliminarImagen = (id,nombre)=>{
+        MySwal.fire({
+            title: '¿Desea eliminar la imágen?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar!',
+          }).then((result) => {
+            if (result.value) {
+                setLoading(true);
+                let nombreImagen = nombre.split('/')[4];
+                fetch(`${API}/borrar_imagen/${id}?name=${nombreImagen}&pass=ZAQ12wsx`,{
+                    method:'DELETE'
+                }).then(res=>res.json()).then(response=>{
+                    setLoading(false);
+                    Swal.fire(
+                        'Eliminado',
+                        response.info,
+                        'warning'
+                    ).then(()=>{
+                        getDatos();
+                    });
+                })
+            }
+        })
+    }
+
+    const modificarImagen = id=>{
+        Swal.fire({
+            title: 'Editar Imagen',
+            html:
+              `
+                <form id="editarImagen">
+                    <input id="swal-input2" className="swal2-input" type="file" name="header"/>
+                    <input type="hidden" name="id" value="${id}"/>
+                    <input type="hidden" name="pass" value="ZAQ12wsx"/>  
+                </form>
+              `,
+            focusConfirm: false,
+            preConfirm: () => {
+                setLoading(true);
+                let data = new FormData(document.getElementById('editarImagen'));
+                fetch(`${API}/modificar_imagen`,{
+                    method:'PUT',
+                    body:data
+                }).then(res=>res.json()).then(response=>{
+                    setLoading(false);
+                    Swal.fire(
+                        'Listo!',
+                        response.info,
+                        'success'
+                    ).then(()=>window.location.assign('/propiedades'));
+                })
+            }
+        })
+    }
+
+    const cargarMasImagenes = (id)=>{
+        Swal.fire({
+            title: 'Agregar Imagenes',
+            html:
+              `
+                <form id="form-imagenes-add">
+                    <input id="swal-input2" className="swal2-input" type="file" multiple name="imagenes"/>
+                    <input type="hidden" name="idCasa" value="${id}"/>
+                    <input type="hidden" name="pass" value="ZAQ12wsx"/>  
+                </form>
+              `,
+            focusConfirm: false,
+            preConfirm: () => {
+                setLoading(true);
+                let files = new FormData(document.getElementById('form-imagenes-add'));
+                fetch(`${API}/imagenes-varios`,{
+                    method:'POST',
+                    body:files
+                }).then(res=>res.json()).then(response=>{
+                    setLoading(false);
+                    Swal.fire(
+                        'Listo!',
+                        'Propiedad registrada satisfactoriamente',
+                        'success'
+                    ).then(()=>{
+                        getDatos();
+                    });
+                })
+            }
+        })
+    }
+
     return (
         (loading)?<Loader/>:
         <FormEditPropiedad
+            propiedad={propiedad}
             error={error}
             categorias={categorias}
             localidades={localidades}
+            localidadesFiltradas={localidadesFiltradas}
+            partidos={partidos}
             operaciones={operaciones}
             formDatosPrincipalesValues={formDatosPrincipalesValues}
             formDatosTecnicosValues={formDatosTecnicosValues}
@@ -219,7 +330,10 @@ const EditPropiedad = (props) => {
             handleChangeServicios={handleChangeServicios}
             handleSubmitPrincipal={handleSubmitPrincipal}
             handleSubmitTecnico={handleSubmitTecnico}
-            handleSubmitServicio={handleSubmitServicio}/>
+            handleSubmitServicio={handleSubmitServicio}
+            eliminarImagen={eliminarImagen}
+            modificarImagen={modificarImagen}
+            cargarMasImagenes={cargarMasImagenes}/>
     );
 }
  

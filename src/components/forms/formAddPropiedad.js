@@ -4,7 +4,7 @@ const FormAddPropiedad = (props) => {
     return(
         <div className="container mt-3">
             <div className="alert alert-success d-none" id="alert-success">Se ha agregado la propiedad con éxito</div>
-            <Link to="/productos" className="btn btn-warning">Regresar al panel de control</Link>
+            <Link to="/propiedades" className="btn btn-warning">Regresar al panel de control</Link>
             <h2 className="mt-2">Formulario de nueva propiedad</h2>
             <form className="form-group" id="form-principal" onSubmit={props.handleSubmitPrincipal}>
                 <div className="row">

@@ -1,0 +1,24 @@
+.contenedor-imagen:hover{
+    background-color:rgba(37, 36, 36, 0.712);
+    opacity: 0.9;
+    border-radius: 10px;
+    transition: all .5s ease;
+}
+
+#form-imagenes i{
+    font-size: 25px;
+    color: white;
+    position: relative;
+    transition: all .5s ease;
+    cursor: pointer;
+}
+
+#form-imagenes .icono-delete:hover{
+    color: red;
+}
+#form-imagenes .icono-update:hover{
+    color: yellow;
+}
+.activeIcono{
+    bottom: 80px;
+}
