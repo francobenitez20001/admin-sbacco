@@ -1,6 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {useUser} from 'reactfire';
 const Home = () => {
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
     return (
         <div className="container mt-3">
             <div className="list-group">

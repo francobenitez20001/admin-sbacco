@@ -2,7 +2,8 @@ import React,{useState} from 'react';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
-import FormAddPartido from '../../components/forms/formAddPartido'
+import FormAddPartido from '../../components/forms/formAddPartido';
+import {useUser} from 'reactfire';
 
 const NewPartido = (props) => {
     const [loading, setLoading] = useState(false);
@@ -11,6 +12,8 @@ const NewPartido = (props) => {
         partido:'',
         pass: "ZAQ12wsx"
     });
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const handleChange = event=>{
         setFormValues({

@@ -4,16 +4,18 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
-
+import {useUser} from 'reactfire';
 const MySwal = withReactContent(Swal)
 
 const Productos = () => {
     const [productos, setProductos] = useState(undefined);
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
         getPropiedades();
-    }, [])
+    }, []);
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const getPropiedades = async()=>{
         try {

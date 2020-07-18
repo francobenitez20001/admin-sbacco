@@ -3,6 +3,7 @@ import FormAddPropiedad from '../../components/forms/formAddPropiedad';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
+import {useUser} from 'reactfire';
 
 const NewPropiedad = (props) => {
     const [loading, setLoading] = useState(true);
@@ -48,7 +49,9 @@ const NewPropiedad = (props) => {
 
     useEffect(() => {
         getDatos();
-    }, [])
+    }, []);
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const getDatos=async()=>{
         try {

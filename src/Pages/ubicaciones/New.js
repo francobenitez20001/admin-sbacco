@@ -2,7 +2,8 @@ import React,{useState,useEffect} from 'react';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
-import FormAddUbicacion from '../../components/forms/formAddUbicacion'
+import FormAddUbicacion from '../../components/forms/formAddUbicacion';
+import {useUser} from 'reactfire';
 
 const NewUbicacion = (props) => {
     const [loading, setLoading] = useState(true);
@@ -13,10 +14,12 @@ const NewUbicacion = (props) => {
         localidad:'',
         pass: "ZAQ12wsx"
     });
-
+    
     useEffect(() => {
         getPartidos();
     }, [])
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const getPartidos = async()=>{
         fetch(`${API}/partidos`).then(res=>res.json()).then(data=>{

@@ -3,6 +3,7 @@ import FormEditContacto from '../../components/forms/formEditContacto';
 import Loader from '../../components/Loader/Loader';
 import Swal from 'sweetalert2'
 import {API} from '../../config';
+import {useUser} from 'reactfire';
 
 const EditContacto = (props) => {
     const [loading, setLoading] = useState(true);
@@ -11,7 +12,9 @@ const EditContacto = (props) => {
 
     useEffect(() => {
         getDatos();
-    }, [])
+    }, []);
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const getDatos=async()=>{
         try {

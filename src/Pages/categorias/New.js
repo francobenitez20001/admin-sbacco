@@ -3,6 +3,7 @@ import {API} from '../../config';
 import Loader from '../../components/Loader/Loader';
 import FormAddCategoria from '../../components/forms/formAddCategoria';
 import Swal from 'sweetalert2';
+import {useUser} from 'reactfire';
 
 const NewCategoria = (props) => {
     const [loading, setLoading] = useState(false);
@@ -11,7 +12,8 @@ const NewCategoria = (props) => {
         categoria:'',
         pass: "ZAQ12wsx"
     });
-
+    let user = useUser();
+    if (!user) return window.location.assign('/auth');
     const handleChange = event=>{
         setFormValues({
             ...formValues,

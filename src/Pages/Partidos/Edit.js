@@ -3,16 +3,19 @@ import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
 import FormEditPartido from '../../components/forms/formEditPartido';
+import {useUser} from 'reactfire';
 
 const EditPartido = (props) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [formValues, setFormValues] = useState(undefined);
-
+    
     useEffect(() => {
         getPartido();
     }, [])
-
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
+    
     const getPartido = async()=>{
         fetch(`${API}/partidos/${props.match.params.id}`).then(res=>res.json()).then(async data=>{
             setFormValues({

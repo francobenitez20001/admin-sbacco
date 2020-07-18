@@ -4,7 +4,7 @@ import Loader from '../../components/Loader/Loader';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import {API} from '../../config';
-import  { Redirect } from 'react-router-dom'
+import {useUser} from 'reactfire';
 const MySwal = withReactContent(Swal)
 
 const EditPropiedad = (props) => {
@@ -19,14 +19,13 @@ const EditPropiedad = (props) => {
     const [formDatosPrincipalesValues, setFormDatosPrincipalesValues] = useState({});
     const [formDatosTecnicosValues, setFormDatosTecnicosValues] = useState({})
     const [formServiciosValues, setFormServiciosValues] = useState({});
-
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-
-
+    
     useEffect(() => {
         getDatos();
     }, [])
-
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
+    
     const getDatos=async()=>{
         try {
             await getPropiedad();

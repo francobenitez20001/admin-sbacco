@@ -2,14 +2,16 @@ import React,{useEffect,useState} from 'react';
 import TablaNosotros from '../../components/tables/Nosotros';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
-import Swal from 'sweetalert2';
+import {useUser} from 'reactfire';
 
 const Nosotros = () => {
     const [Nosotros, setNosotros] = useState(undefined);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         getNosotros();
-    }, [])
+    }, []);
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const getNosotros = async()=>{
         try {

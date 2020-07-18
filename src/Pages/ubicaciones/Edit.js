@@ -3,16 +3,20 @@ import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
 import FormEditUbicacion from '../../components/forms/formEditUbicacion';
+import {useUser} from 'reactfire';
+
 
 const EditUbicacion = (props) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [partidos, setPartidos] = useState(undefined);
     const [formValues, setFormValues] = useState(undefined);
-
+    
     useEffect(() => {
         getDatos();
     }, [])
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const getDatos = async ()=>{
         try {

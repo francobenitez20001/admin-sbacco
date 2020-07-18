@@ -1,6 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import 'firebase/auth';
+import {useFirebaseApp,useUser} from 'reactfire';
 const Navbar = () => {
+    const firebase = useFirebaseApp();
+    const user = useUser();
+
+    const logout = async()=>{
+        await firebase.auth().signOut();
+        window.location.assign('/login');
+    }
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <Link className="navbar-brand" to="/">Angela Sbacco</Link>
@@ -28,6 +37,11 @@ const Navbar = () => {
                     <li className="nav-item">
                         <Link className="nav-link" to="/nosotros">Quiénes somos</Link>
                     </li>
+                    {(!user)?null:
+                        <li className="nav-item">
+                            <button onClick={logout} type="button" className="btn btn-danger">Salir</button>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>

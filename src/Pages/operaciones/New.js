@@ -3,6 +3,7 @@ import {API} from '../../config';
 import Loader from '../../components/Loader/Loader';
 import FormAddOperacion from '../../components/forms/formAddOperacion';
 import Swal from 'sweetalert2';
+import {useUser} from 'reactfire';
 
 const NewOperacion = (props) => {
     const [loading, setLoading] = useState(false);
@@ -11,6 +12,8 @@ const NewOperacion = (props) => {
         operacion:'',
         pass: "ZAQ12wsx"
     });
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
 
     const handleChange = event=>{
         setFormValues({

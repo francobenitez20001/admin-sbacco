@@ -215,7 +215,7 @@ const FormEditPropiedad = (props) => {
                 <br/>
                 <div className="row">
                     {props.propiedad.imagenes.map(img=>(
-                        (img.header == 0)?null:
+                        (img.header === 0)?null:
                         <React.Fragment key={img.id}>
                             <div className="col-12 col-sm-3 md-3">
                                 <img src={img.nombre} className="w-100" alt="header"/>
@@ -233,7 +233,7 @@ const FormEditPropiedad = (props) => {
             <form className="form-group" id="form-imagenes" onSubmit={props.handleSubmitImagenes}>
                 <div className="row my-5">
                     {props.propiedad.imagenes.map(img=>(
-                        (img.header == 1)?null:
+                        (img.header === 1)?null:
                         <div key={img.id} className="col-12 col-sm-3 text-center contenedor-imagen py-3">
                             <img src={img.nombre} alt={img.nombre} className="w-100 imagen-propiedad d-block mb-3" style={{height:"160px",cursor:'pointer'}}/>
                             <i onClick={()=>props.eliminarImagen(img.id,img.nombre)} className="icono-delete mx-4 fas fa-trash-alt"></i>

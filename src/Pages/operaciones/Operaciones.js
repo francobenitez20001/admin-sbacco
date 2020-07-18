@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import {API} from '../../config'
 import Loader from '../../components/Loader/Loader';
+import {useUser} from 'reactfire';
 
 const MySwal = withReactContent(Swal)
 
@@ -13,6 +14,8 @@ const Operaciones = () => {
     useEffect(() => {
         getOperaciones();
     }, [])
+    let user = useUser();
+    if (!user) return window.location.assign('/login');
     
     const getOperaciones = async()=>{
         fetch(`${API}/operaciones`).then(res=>res.json()).then(data=>{

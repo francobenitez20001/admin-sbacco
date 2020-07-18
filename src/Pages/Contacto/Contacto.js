@@ -3,6 +3,7 @@ import TablaContacto from '../../components/tables/Contacto';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
+import {useUser} from 'reactfire';
 
 const Contacto = () => {
     const [contacto, setContacto] = useState(undefined);
@@ -10,7 +11,9 @@ const Contacto = () => {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         getData();
-    }, [])
+    }, []);
+    let user = useUser();
+    if (!user) return window.location.assign('/auth');
 
     const getData = async()=>{
         try {

@@ -30,6 +30,8 @@ import EditPartido from '../Pages/Partidos/Edit';
 import Contacto from '../Pages/Contacto/Contacto';
 import EditContacto from '../Pages/Contacto/Edit';
 
+import Login from '../Pages/Login/Login';
+
 const App = () => {
     return (
         <BrowserRouter>
@@ -55,6 +57,7 @@ const App = () => {
                     <Route exact path="/partido/edit/:id" component={EditPartido}/>
                     <Route exact path="/contacto" component={Contacto}/>
                     <Route exact path="/contacto/edit/:id" component={EditContacto}/>
+                    <Route exact path="/login" component={Login}/>
                 </Switch>
             </Layout>
         </BrowserRouter>
