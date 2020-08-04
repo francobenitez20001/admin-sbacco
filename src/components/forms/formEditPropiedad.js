@@ -8,7 +8,7 @@ const FormEditPropiedad = (props) => {
             <div className="alert alert-success d-none" id="alert-success">Se ha agregado la propiedad con éxito</div>
             <Link to="/propiedades" className="btn btn-warning">Regresar al panel de control</Link>
             <h2 className="mt-2">Formulario de modificación de propiedad</h2>
-            <form className="form-group d-none" id="form-principal" onSubmit={props.handleSubmitPrincipal}>
+            <form className="form-group" id="form-principal" onSubmit={props.handleSubmitPrincipal}>
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <br/>
@@ -210,38 +210,40 @@ const FormEditPropiedad = (props) => {
                     <input type="submit" className="btn btn-info" name="" style={{float: "right"}} value="Guardar y Continuar"/>
                     <br/><br/>
             </form>
-            <form className="form-group" id="form-header" encType="multipart/form-data" onSubmit={props.handleSubmitHeader}>
-                <div className="alert alert-warning"><b>En el caso de que no quiera modificar las imagenes puede volver al administrador de propiedades</b></div>
-                <br/>
-                <div className="row">
-                    {props.propiedad.imagenes.map(img=>(
-                        (img.header === 0)?null:
-                        <React.Fragment key={img.id}>
-                            <div className="col-12 col-sm-3 md-3">
-                                <img src={img.nombre} className="w-100" alt="header"/>
+            <div id="container__imagenes" className="d-none">
+                <form className="form-group" id="form-header" encType="multipart/form-data" onSubmit={props.handleSubmitHeader}>
+                    <div className="alert alert-warning"><b>En el caso de que no quiera modificar las imagenes puede volver al administrador de propiedades</b></div>
+                    <br/>
+                    <div className="row">
+                        {props.propiedad.imagenes.map(img=>(
+                            (img.header === 0)?null:
+                            <React.Fragment key={img.id}>
+                                <div className="col-12 col-sm-3 md-3">
+                                    <img src={img.nombre} className="w-100" alt="header"/>
+                                </div>
+                                <div className="col-12 col-sm-9 text-right md-3">
+                                    <input type="button" style={{position:'absolute',bottom:'0px',right:'10px'}} onClick={()=>props.modificarImagen(img.id)} className="btn btn-info" value="Modificar"/>
+                                </div>
+                            </React.Fragment>
+                        ))}
+                    </div>
+                </form>
+                <hr/>
+                <h3 className="mt-3">Imagenes restantes de la propiedad</h3>
+                <input type="button" onClick={()=>props.cargarMasImagenes(props.propiedad.data[0].idCasa)} className="btn btn-info" value="Agregar" style={{float:'right',position:'relative',top:'-40px'}}/>
+                <form className="form-group" id="form-imagenes" onSubmit={props.handleSubmitImagenes}>
+                    <div className="row my-5">
+                        {props.propiedad.imagenes.map(img=>(
+                            (img.header === 1)?null:
+                            <div key={img.id} className="col-12 col-sm-3 text-center contenedor-imagen py-3">
+                                <img src={img.nombre} alt={img.nombre} className="w-100 imagen-propiedad d-block mb-3" style={{height:"160px",cursor:'pointer'}}/>
+                                <i onClick={()=>props.eliminarImagen(img.id,img.nombre)} className="icono-delete mx-4 fas fa-trash-alt"></i>
+                                <i onClick={()=>props.modificarImagen(img.id)} className="icono-update mx-4 fas fa-pen"></i>
                             </div>
-                            <div className="col-12 col-sm-9 text-right md-3">
-                                <input type="button" style={{position:'absolute',bottom:'0px',right:'10px'}} onClick={()=>props.modificarImagen(img.id)} className="btn btn-info" value="Modificar"/>
-                            </div>
-                        </React.Fragment>
-                    ))}
-                </div>
-            </form>
-            <hr/>
-            <h3 className="mt-3">Imagenes restantes de la propiedad</h3>
-            <input type="button" onClick={()=>props.cargarMasImagenes(props.propiedad.data[0].idCasa)} className="btn btn-info" value="Agregar" style={{float:'right',position:'relative',top:'-40px'}}/>
-            <form className="form-group" id="form-imagenes" onSubmit={props.handleSubmitImagenes}>
-                <div className="row my-5">
-                    {props.propiedad.imagenes.map(img=>(
-                        (img.header === 1)?null:
-                        <div key={img.id} className="col-12 col-sm-3 text-center contenedor-imagen py-3">
-                            <img src={img.nombre} alt={img.nombre} className="w-100 imagen-propiedad d-block mb-3" style={{height:"160px",cursor:'pointer'}}/>
-                            <i onClick={()=>props.eliminarImagen(img.id,img.nombre)} className="icono-delete mx-4 fas fa-trash-alt"></i>
-                            <i onClick={()=>props.modificarImagen(img.id)} className="icono-update mx-4 fas fa-pen"></i>
-                        </div>
-                    ))}
-                </div>
-            </form>
+                        ))}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

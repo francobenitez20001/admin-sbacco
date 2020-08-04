@@ -175,10 +175,13 @@ const EditPropiedad = (props) => {
                 setLoading(false);
                 Swal.fire(
                     'Datos modificados!',
-                    res.info,
+                    'Puede modificar las imágenes si quiere',
                     'success'
                 ).then(()=>{
-                    props.history.push('/propiedades')
+                    document.getElementById('form-principal').classList.add('d-none');
+                    document.getElementById('form-tecnico').classList.add('d-none');
+                    document.getElementById('form-servicio').classList.add('d-none');
+                    document.getElementById('container__imagenes').classList.remove('d-none');
                 });
             })
         };
@@ -255,13 +258,20 @@ const EditPropiedad = (props) => {
             html:
               `
                 <form id="editarImagen">
-                    <input id="swal-input2" className="swal2-input" type="file" name="header"/>
+                    <input id="swal-input2" className="swal2-input" type="file" required name="header"/>
                     <input type="hidden" name="id" value="${id}"/>
                     <input type="hidden" name="pass" value="ZAQ12wsx"/>  
                 </form>
               `,
             focusConfirm: false,
             preConfirm: () => {
+                if(document.getElementsByName('header')[0].value === ''){
+                    return Swal.fire(
+                        'Error',
+                        'Ninguna imagen se seleccionó',
+                        'error'
+                    )
+                };
                 setLoading(true);
                 let data = new FormData(document.getElementById('editarImagen'));
                 fetch(`${API}/modificar_imagen`,{
@@ -285,13 +295,20 @@ const EditPropiedad = (props) => {
             html:
               `
                 <form id="form-imagenes-add">
-                    <input id="swal-input2" className="swal2-input" type="file" multiple name="imagenes"/>
+                    <input id="swal-input2" required className="swal2-input" type="file" multiple name="imagenes"/>
                     <input type="hidden" name="idCasa" value="${id}"/>
                     <input type="hidden" name="pass" value="ZAQ12wsx"/>  
                 </form>
               `,
             focusConfirm: false,
             preConfirm: () => {
+                if(document.getElementsByName('imagenes')[0].value === ''){
+                    return Swal.fire(
+                        'Error',
+                        'Debes agregar al menos una imagen',
+                        'error'
+                    )
+                };
                 setLoading(true);
                 let files = new FormData(document.getElementById('form-imagenes-add'));
                 fetch(`${API}/imagenes-varios`,{
