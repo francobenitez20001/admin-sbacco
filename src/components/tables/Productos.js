@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 
 const TablaProductos = (props) => {
     return (
-        (!props.productos)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
         <>
             <h3 className="my-4 ml-2">Tabla de administración de propiedades</h3>
             <table className="table text-center">
@@ -20,7 +19,8 @@ const TablaProductos = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    {props.productos.map(propiedad=>(
+                    {(!props.productos)?null:
+                    props.productos.map(propiedad=>(
                         <tr key={propiedad.id}>
                             <th>{propiedad.localidad}</th>
                             <td>{propiedad.categoria}</td>
