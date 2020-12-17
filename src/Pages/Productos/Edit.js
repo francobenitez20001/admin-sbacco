@@ -138,10 +138,14 @@ const EditPropiedad = (props) => {
                 body:JSON.stringify(formDatosPrincipalesValues),
                 headers:{ 'Content-Type': 'application/json' }
             }).then(res=>res.json()).then(res=>{
-                console.log(res);
                 setLoading(false);
                 document.getElementById('form-principal').classList.add('d-none');
-                document.getElementById('form-tecnico').classList.remove('d-none');
+                if(formDatosPrincipalesValues.idCategoria==3){
+                    document.getElementById('form-tecnico').classList.add('d-none');
+                    document.getElementById('form-servicio').classList.remove('d-none');
+                }else{
+                    document.getElementById('form-tecnico').classList.remove('d-none');
+                }
             })
         };
     }

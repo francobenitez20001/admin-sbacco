@@ -151,13 +151,26 @@ const NewPropiedad = (props) => {
         };
     }
 
-    const handleSubmitTecnico = event=>{
+    const handleSubmitTecnico = (event,omite=false)=>{
         event.preventDefault();
-        if(validar(formDatosTecnicosValues,'tecnico')){
+        let datosTecnicos = formDatosTecnicosValues;
+        if(omite){
+            datosTecnicos = {
+                cochera:"null",
+                dormitorios:"null",
+                idCasa:formDatosTecnicosValues.idCasa,
+                pass:"ZAQ12wsx",
+                pileta:"null",
+                s_cubierta:"null",
+                s_semicubierta:"null",
+                s_terreno:"null"
+            };
+        }
+        if(validar(formDatosTecnicosValues,'tecnico') || omite){
             setLoading(true);
             fetch(`${API}/insertar_dato_tecnico`,{
                 method:'POST',
-                body:JSON.stringify(formDatosTecnicosValues),
+                body:JSON.stringify(datosTecnicos),
                 headers:{'Content-Type':'application/json'}
             }).then(res=>res.json()).then(response=>{
                 setLoading(false);
