@@ -1,6 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 const FormAddPropiedad = (props) => {
+    const omitirDatos = event=>{
+        props.handleSubmitTecnico(event,true);
+    }
     return(
         <div className="container mt-3">
             <div className="alert alert-success d-none" id="alert-success">Se ha agregado la propiedad con éxito</div>
@@ -142,7 +145,8 @@ const FormAddPropiedad = (props) => {
                     </div>
                 </div>
                 <br/>
-                <input type="submit" className="btn btn-info mt-3" style={{float:"right"}} value="Guardar y Continuar"/>
+                <input type="button" onClick={omitirDatos} className="btn btn-info mt-3" style={{float:"right"}} value="Omitir datos"/>
+                <input type="submit" className="btn btn-info mt-3 mr-2" style={{float:"right"}} value="Guardar y Continuar"/>
                 <br/><br/>
             </form>
             <hr/>
