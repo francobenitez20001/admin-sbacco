@@ -24,7 +24,9 @@ const NewPropiedad = (props) => {
         estado:"Disponible",
         mostrarEstado:"si",
         moneda:"dolar",
-        pass:"ZAQ12wsx"    
+        pass:"ZAQ12wsx",
+        lat:'',
+        lon:''    
     });
     const [formDatosTecnicosValues, setFormDatosTecnicosValues] = useState({
         cochera:"Si",

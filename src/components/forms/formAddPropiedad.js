@@ -66,6 +66,8 @@ const FormAddPropiedad = (props) => {
                             <option value="Disponible">Disponible</option>
                             <option value="Ocupado">Ocupado</option>
                             <option value="Reservado">Reservado</option>
+                            <option value="Alquilado">Alquilado</option>
+                            <option value="Vendido">Vendido</option>
                         </select>
                     </div>
                     <div className="col-12 col-md-6 input-group mt-4">
