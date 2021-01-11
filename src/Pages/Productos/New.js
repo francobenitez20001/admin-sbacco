@@ -158,14 +158,14 @@ const NewPropiedad = (props) => {
         let datosTecnicos = formDatosTecnicosValues;
         if(omite){
             datosTecnicos = {
-                cochera:"null",
-                dormitorios:"null",
                 idCasa:formDatosTecnicosValues.idCasa,
+                cochera:"-",
+                dormitorios:0,
                 pass:"ZAQ12wsx",
-                pileta:"null",
-                s_cubierta:"null",
-                s_semicubierta:"null",
-                s_terreno:"null"
+                pileta:"-",
+                s_cubierta:"",
+                s_semicubierta:"",
+                s_terreno:""
             };
         }
         if(validar(formDatosTecnicosValues,'tecnico') || omite){
