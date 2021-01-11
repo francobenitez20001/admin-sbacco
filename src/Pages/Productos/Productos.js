@@ -19,7 +19,12 @@ const Productos = () => {
 
     const getPropiedades = async()=>{
         try {
-            fetch(`${API}/listar_inmuebles/1000/normal`).then(res=>res.json()).then(data=>{
+            let headers = new Headers();
+            headers.append('admin',true);
+            fetch(`${API}/listar_inmuebles/1000/normal`,{
+                method:'GET',
+                headers
+            }).then(res=>res.json()).then(data=>{
                 setProductos(data.data);
                 setLoading(false);
             })
@@ -52,11 +57,45 @@ const Productos = () => {
         })
     }
 
+    const switchEstadoPropiedadEnPagina = id=>{
+        if(!id) return;
+        MySwal.fire({
+            title: '¿Seguro que desea activar esta propiedad?',
+            text: "Esta acción se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cambiar!',
+          }).then((result) => {
+            if (result.value) {
+                fetch(`${API}/habilitar_inmueble/${id}/ZAQ12wsx`,{method:'PUT'}).then(res=>res.json()).then(data=>{
+                    if(data.status){
+                        Swal.fire(
+                            'Listo!',
+                            data.info,
+                            'success'
+                        ).then(()=>{
+                            getPropiedades();
+                        })
+                    }else{
+                        Swal.fire(
+                            'Ups..',
+                            data.info,
+                            'error'
+                        )
+                    }
+                }) 
+            }
+        })
+    }
+
     return (
         (loading)?<Loader/>:
         <TablaProductos
             productos={productos}
-            eliminarPropiedad={eliminarPropiedad}/>
+            eliminarPropiedad={eliminarPropiedad}
+            switchEstadoPropiedadEnPagina={switchEstadoPropiedadEnPagina}/>
     );
 }
  
