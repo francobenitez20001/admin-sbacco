@@ -1,5 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import PlacesAutocomplete from 'react-places-autocomplete';
+
 const FormAddPropiedad = (props) => {
     const omitirDatos = event=>{
         props.handleSubmitTecnico(event,true);
@@ -48,10 +50,45 @@ const FormAddPropiedad = (props) => {
                             ))}
                         </select>
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12">
                         <br/>
                         Dirección
-                        <input type="text" name="direccion" placeholder="Dirección" className="form-control" onChange={props.handleChangePrincipal} required/>
+                        <PlacesAutocomplete value={props.formDatosPrincipalesValues.direccion} onChange={props.handleChangeUbicacion} onSelect={props.handleSelectUbicacion}>
+                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                            <div>
+                                <input
+                                    className='form-control' id="ubicacion"
+                                    {...getInputProps({
+                                        placeholder: 'Buscá tu dirección ...',
+                                    })}
+                                />
+                                <div className="autocomplete-dropdown-container">
+                                    {loading && <div>Loading...</div>}
+                                    {suggestions.map((suggestion,key) => {
+                                        const className = suggestion.active
+                                        ? 'suggestion-item--active'
+                                        : 'suggestion-item';
+                                        // inline style for demonstration purpose
+                                        const style = suggestion.active
+                                        ? { backgroundColor: '#fafafa', cursor: 'pointer',margin:'10px',padding:'5px' }
+                                        : { backgroundColor: '#ffffff', cursor: 'pointer',margin:'10px',padding:'5px' };
+                                        return (
+                                            <div
+                                                {...getSuggestionItemProps(suggestion, {
+                                                className,
+                                                style,
+                                                key
+                                                })}
+                                            >
+                                                <span>{suggestion.description}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                        </PlacesAutocomplete>
+                        {/* <input type="text" name="direccion" placeholder="Dirección" className="form-control" onChange={props.handleChangePrincipal} required/> */}
                     </div>
                 </div>
                 <textarea name="descripcion" className="form-control mt-3" placeholder="Describa la propiedad" cols="30" rows="10" required onChange={props.handleChangePrincipal}></textarea>

@@ -5,7 +5,8 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import {API} from '../../config';
 import {useUser} from 'reactfire';
-const MySwal = withReactContent(Swal)
+import {geocodeByAddress,getLatLng} from 'react-places-autocomplete';
+const MySwal = withReactContent(Swal);
 
 const EditPropiedad = (props) => {
     const [loading, setLoading] = useState(true);
@@ -54,7 +55,9 @@ const EditPropiedad = (props) => {
                     mostrarEstado:data.data[0].mostrarEstado,
                     moneda:data.data[0].moneda,
                     id:data.data[0].idCasa,
-                    pass:"ZAQ12wsx"  
+                    pass:"ZAQ12wsx",
+                    lat:data.data[0].lat,
+                    lon:data.data[0].lon  
                 });
                 setFormDatosTecnicosValues({
                     cochera:data.data[0].cochera,
@@ -108,6 +111,24 @@ const EditPropiedad = (props) => {
         }).catch(err=>console.error(err))
     }
 
+    const handleSelectUbicacion = address => {
+        geocodeByAddress(address).then(results => getLatLng(results[0])).then(latLng =>{
+            setFormDatosPrincipalesValues({
+                ...formDatosPrincipalesValues,
+                direccion:address,
+                lat:latLng.lat,
+                lon:latLng.lng
+            });
+        })
+        .catch(error => console.error('Error', error));
+    };
+    const handleChangeUbicacion = address => {
+        setFormDatosPrincipalesValues({
+            ...formDatosPrincipalesValues,
+            direccion:address
+        });
+    };
+
     const handleChangePrincipal = event=>{
         setFormDatosPrincipalesValues({
             ...formDatosPrincipalesValues,
@@ -139,6 +160,11 @@ const EditPropiedad = (props) => {
                 headers:{ 'Content-Type': 'application/json' }
             }).then(res=>res.json()).then(res=>{
                 setLoading(false);
+                if(!res.status) return Swal.fire(
+                    'Error',
+                    res.info.sqlMessage,
+                    'error'
+                ) 
                 document.getElementById('form-principal').classList.add('d-none');
                 if(formDatosPrincipalesValues.idCategoria==3){
                     document.getElementById('form-tecnico').classList.add('d-none');
@@ -150,13 +176,26 @@ const EditPropiedad = (props) => {
         };
     }
 
-    const handleSubmitTecnico = event=>{
+    const handleSubmitTecnico = (event,omite)=>{
         event.preventDefault();
-        if(validar(formDatosTecnicosValues,'tecnico')){
+        let datosTecnicos = formDatosTecnicosValues;
+        if(omite){
+            datosTecnicos = {
+                idCasa:formDatosTecnicosValues.idCasa,
+                cochera:"-",
+                dormitorios:0,
+                pass:"ZAQ12wsx",
+                pileta:"-",
+                s_cubierta:"",
+                s_semicubierta:"",
+                s_terreno:""
+            };
+        }
+        if(validar(formDatosTecnicosValues,'tecnico' || omite)){
             setLoading(true);
             fetch(`${API}/modificar_dato_tecnico`,{
                 method:'PUT',
-                body:JSON.stringify(formDatosTecnicosValues),
+                body:JSON.stringify(datosTecnicos),
                 headers:{'Content-Type':'application/json'}
             }).then(res=>res.json()).then(res=>{
                 setLoading(false);
@@ -353,7 +392,9 @@ const EditPropiedad = (props) => {
             handleSubmitServicio={handleSubmitServicio}
             eliminarImagen={eliminarImagen}
             modificarImagen={modificarImagen}
-            cargarMasImagenes={cargarMasImagenes}/>
+            cargarMasImagenes={cargarMasImagenes}
+            handleChangeUbicacion={handleChangeUbicacion}
+            handleSelectUbicacion={handleSelectUbicacion}/>
     );
 }
  
