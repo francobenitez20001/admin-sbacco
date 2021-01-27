@@ -4,6 +4,8 @@ import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
 import Swal from 'sweetalert2';
 import {useUser} from 'reactfire';
+import {geocodeByAddress,getLatLng} from 'react-places-autocomplete';
+
 
 const NewPropiedad = (props) => {
     const [loading, setLoading] = useState(true);
@@ -107,6 +109,24 @@ const NewPropiedad = (props) => {
         let localidadesFiltradas = localidades.filter(res=>res.idPartido == idPartido);
         return setLocalidadesFiltradas(localidadesFiltradas);
     }
+
+    const handleSelectUbicacion = address => {
+        geocodeByAddress(address).then(results => getLatLng(results[0])).then(latLng =>{
+            setFormDatosPrincipalesValues({
+                ...formDatosPrincipalesValues,
+                direccion:address,
+                lat:latLng.lat,
+                lon:latLng.lng
+            });
+        })
+        .catch(error => console.error('Error', error));
+    };
+    const handleChangeUbicacion = address => {
+        setFormDatosPrincipalesValues({
+            ...formDatosPrincipalesValues,
+            direccion:address
+        });
+    };
 
     const handleChangeTecnico = event=>{
         setFormDatosTecnicosValues({
@@ -335,7 +355,9 @@ const NewPropiedad = (props) => {
             handleSubmitTecnico={handleSubmitTecnico}
             handleSubmitServicio={handleSubmitServicio}
             handleSubmitHeader={handleSubmitHeader}
-            handleSubmitImagenes={handleSubmitImagenes}/>
+            handleSubmitImagenes={handleSubmitImagenes}
+            handleChangeUbicacion={handleChangeUbicacion}
+            handleSelectUbicacion={handleSelectUbicacion}/>
     );
 }
  
