@@ -15,11 +15,14 @@ const NewPropiedad = (props) => {
     const [localidadesFiltradas, setLocalidadesFiltradas] = useState(undefined);
     const [operaciones, setOperaciones] = useState(undefined);
     const [partidos, setPartidos] = useState(undefined);
+    const [barrios, setBarrios] = useState(undefined);
+    const [barriosFiltrados, setBarriosFiltrados] = useState(undefined);
     const [formDatosPrincipalesValues, setFormDatosPrincipalesValues] = useState({
         idCategoria:"1",
         idOperacion:"1",
         idPartido:"1",
         idLocalidad:"1",
+        idBarrio:"1",
         direccion:"",
         descripcion:"",
         precio:"",
@@ -62,6 +65,7 @@ const NewPropiedad = (props) => {
             await getCategorias();
             await getLocalidades();
             await getPartidos();
+            await getBarrios();
             await getOperaciones();
         } catch (error) {
             console.log(error);
@@ -87,6 +91,13 @@ const NewPropiedad = (props) => {
         })
     }
 
+    const getBarrios = async()=>{
+        await fetch(`${API}/barrios`).then(res=>res.json()).then(data=>{
+            setBarrios(data.data);
+            setBarriosFiltrados(data.data.filter(res=>res.idLocalidad == parseInt(formDatosPrincipalesValues.idLocalidad)));
+        })
+    }
+
     const getOperaciones = async()=>{
         await fetch(`${API}/operaciones`).then(res=>res.json()).then(data=>{
             setOperaciones(data.data);
@@ -99,6 +110,9 @@ const NewPropiedad = (props) => {
             //traigo las localidades de ese partido
             filtrarLocalidadPorPartido(event.target.value);
         }
+        if(event.target.name === 'idLocalidad'){
+            filtrarBarrioPorLocalidad(event.target.value);
+        }
         setFormDatosPrincipalesValues({
             ...formDatosPrincipalesValues,
             [event.target.name]:event.target.value
@@ -108,6 +122,11 @@ const NewPropiedad = (props) => {
     const filtrarLocalidadPorPartido = idPartido=>{
         let localidadesFiltradas = localidades.filter(res=>res.idPartido == idPartido);
         return setLocalidadesFiltradas(localidadesFiltradas);
+    }
+
+    const filtrarBarrioPorLocalidad = idLocalidad=>{
+        let barriosFiltrados = barrios.filter(res=>res.idLocalidad == parseInt(idLocalidad));
+        return setBarriosFiltrados(barriosFiltrados);
     }
 
     const handleSelectUbicacion = address => {
@@ -342,8 +361,10 @@ const NewPropiedad = (props) => {
         <FormAddPropiedad
             categorias={categorias}
             partidos={partidos}
+            barrios={barrios}
             localidades={localidades}
             localidadesFiltradas={localidadesFiltradas}
+            barriosFiltrados={barriosFiltrados}
             operaciones={operaciones}
             formDatosPrincipalesValues={formDatosPrincipalesValues}
             formDatosTecnicosValues={formDatosTecnicosValues}
