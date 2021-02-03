@@ -17,6 +17,8 @@ const EditPropiedad = (props) => {
     const [partidos, setpartidos] = useState(undefined);
     const [operaciones, setOperaciones] = useState(undefined);
     const [propiedad, setPropiedad] = useState(undefined);
+    const [barrios, setBarrios] = useState(undefined);
+    const [barriosFiltrados, setBarriosFiltrados] = useState(undefined);
     const [formDatosPrincipalesValues, setFormDatosPrincipalesValues] = useState({});
     const [formDatosTecnicosValues, setFormDatosTecnicosValues] = useState({})
     const [formServiciosValues, setFormServiciosValues] = useState({});
@@ -33,6 +35,7 @@ const EditPropiedad = (props) => {
             await getCategorias();
             await getLocalidades();
             await getPartidos();
+            await getBarrios();
             await getOperaciones();
         } catch (error) {
             console.log(error);
@@ -48,6 +51,7 @@ const EditPropiedad = (props) => {
                     idOperacion:data.data[0].idOperacion,
                     idLocalidad:data.data[0].idLocalidad,
                     idPartido:data.data[0].idPartido,
+                    idBarrio:data.data[0].idBarrio,
                     direccion:data.data[0].direccion,
                     descripcion:data.data[0].descripcion,
                     precio:data.data[0].precio,
@@ -104,11 +108,32 @@ const EditPropiedad = (props) => {
         }).catch(console.error)
     }
 
+    const getBarrios = async()=>{
+        await fetch(`${API}/barrios`).then(res=>res.json()).then(data=>{
+            setBarrios(data.data);
+            setBarriosFiltrados(data.data);
+        })
+    }
+
     const getOperaciones = async()=>{
         fetch(`${API}/operaciones`).then(res=>res.json()).then(data=>{
             setOperaciones(data.data);
             setLoading(false);
         }).catch(err=>console.error(err))
+    }
+
+    const filtrarLocalidadPorPartido = idPartido=>{
+        let localidadesFiltradas = localidades.filter(res=>res.idPartido == idPartido);
+        return setLocalidadesFiltradas(localidadesFiltradas);
+    }
+
+    const filtrarBarrioPorLocalidad = idLocalidad=>{
+        let bFiltrados = barrios.filter(res=>res.idLocalidad == parseInt(idLocalidad));
+        setBarriosFiltrados(bFiltrados);
+        setFormDatosPrincipalesValues({
+            ...formDatosPrincipalesValues,
+            idBarrio:barriosFiltrados[0].idBarrio
+        })
     }
 
     const handleSelectUbicacion = address => {
@@ -130,6 +155,13 @@ const EditPropiedad = (props) => {
     };
 
     const handleChangePrincipal = event=>{
+        if(event.target.name === 'idPartido'){
+            //traigo las localidades de ese partido
+            filtrarLocalidadPorPartido(event.target.value);
+        }
+        if(event.target.name === 'idLocalidad'){
+            filtrarBarrioPorLocalidad(event.target.value);
+        }
         setFormDatosPrincipalesValues({
             ...formDatosPrincipalesValues,
             [event.target.name]:event.target.value
@@ -381,6 +413,7 @@ const EditPropiedad = (props) => {
             localidadesFiltradas={localidadesFiltradas}
             partidos={partidos}
             operaciones={operaciones}
+            barriosFiltrados={barriosFiltrados}
             formDatosPrincipalesValues={formDatosPrincipalesValues}
             formDatosTecnicosValues={formDatosTecnicosValues}
             formServiciosValues={formServiciosValues}

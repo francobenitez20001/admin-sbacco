@@ -31,6 +31,9 @@ import Contacto from '../Pages/Contacto/Contacto';
 import EditContacto from '../Pages/Contacto/Edit';
 
 import Login from '../Pages/Login/Login';
+import Barrios from '../Pages/Barrios/Barrios';
+import EditBarrio from '../Pages/Barrios/Edit';
+import NewBarrio from '../Pages/Barrios/New';
 
 const App = () => {
     return (
@@ -41,6 +44,7 @@ const App = () => {
                     <Route exact path="/propiedades" component={Productos}/>
                     <Route exact path="/categorias" component={Categorias}/>
                     <Route exact path="/ubicaciones" component={Ubicaciones}/>
+                    <Route exact path="/barrios" component={Barrios}/>
                     <Route exact path="/operaciones" component={Operaciones}/>
                     <Route exact path="/nosotros" component={Nosotros}/>
                     <Route exact path="/partidos" component={Partidos}/>
@@ -51,6 +55,8 @@ const App = () => {
                     <Route exact path="/categoria/edit/:id" component={EditCategoria}/>
                     <Route exact path="/ubicacion/add" component={NewUbicacion}/>
                     <Route exact path="/ubicacion/edit/:id" component={EditUbicacion}/>
+                    <Route exact path="/barrios/add" component={NewBarrio}/>
+                    <Route exact path="/barrios/edit/:id" component={EditBarrio}/>
                     <Route exact path="/operacion/add" component={NewOperacion}/>
                     <Route exact path="/operacion/edit/:id" component={EditOperacion}/>
                     <Route exact path="/partido/add" component={NewPartido}/>

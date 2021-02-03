@@ -33,7 +33,7 @@ const FormEditPropiedad = (props) => {
                             ))}
                         </select>
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
                         <br/>
                         Partido
                         <select name="idPartido" className="form-control" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.idPartido}> 
@@ -42,12 +42,21 @@ const FormEditPropiedad = (props) => {
                             ))}
                         </select>
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
                         <br/>
                         Localidades
                         <select name="idLocalidad" className="form-control" defaultValue={props.formDatosPrincipalesValues.idLocalidad} onChange={props.handleChangePrincipal}>
                             {props.localidadesFiltradas.map(localidad=>(
                                 <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <br/>
+                        Barrio
+                        <select name="idBarrio" className="form-control" defaultValue={props.formDatosPrincipalesValues.idBarrio} onChange={props.handleChangePrincipal}>
+                            {props.barriosFiltrados.map(barrio=>(
+                                <option key={barrio.idBarrio} value={barrio.idBarrio}>{barrio.barrio}</option>
                             ))}
                         </select>
                     </div>

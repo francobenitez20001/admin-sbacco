@@ -31,7 +31,7 @@ const FormAddPropiedad = (props) => {
                             ))}
                         </select>
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
                         <br/>
                         Partido
                         <select name="idPartido" className="form-control" onChange={props.handleChangePrincipal}>
@@ -40,7 +40,7 @@ const FormAddPropiedad = (props) => {
                             ))}
                         </select>
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
                         <br/>
                         Localidades
                         <select name="idLocalidad" className="form-control" onChange={props.handleChangePrincipal}>
@@ -50,6 +50,17 @@ const FormAddPropiedad = (props) => {
                             ))}
                         </select>
                     </div>
+                    <div className="col-12 col-md-4">
+                        <br/>
+                        Barrio
+                        <select name="idBarrio" className="form-control" onChange={props.handleChangePrincipal}>
+                            <option value="">Selecciona barrio</option>
+                            {props.barriosFiltrados.map(barrio=>(
+                                <option key={barrio.idBarrio} value={barrio.idBarrio}>{barrio.barrio}</option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div className="col-12">
                         <br/>
                         Dirección
