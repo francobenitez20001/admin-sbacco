@@ -21,7 +21,7 @@ const Productos = () => {
         try {
             let headers = new Headers();
             headers.append('admin',true);
-            fetch(`${API}/listar_inmuebles/1000/normal`,{
+            fetch(`${API}/listar_inmuebles/1000/normal?desde=0`,{
                 method:'GET',
                 headers
             }).then(res=>res.json()).then(data=>{
