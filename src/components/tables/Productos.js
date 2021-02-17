@@ -25,14 +25,14 @@ const TablaProductos = (props) => {
                     props.productos.map(propiedad=>(
                         <tr key={propiedad.id} style={{border:`solid 2px ${(propiedad.activo)?`green`:`yellow`}`}}>
                             <th><img style={{width:'30px',maxHeight:'30px',cursor:'pointer'}} src={propiedad.header} alt={propiedad.localidad}/></th>
-                            <th>{propiedad.localidad}</th>
+                            <th>{propiedad.barrio}</th>
                             <td>{propiedad.categoria}</td>
                             <td>{propiedad.operacion}</td>
                             <td>{propiedad.precio}</td>
                             <td>{propiedad.estado}</td>
                             <td className="text-center">
-                                <Link to={{pathname:`/propiedad/edit/${propiedad.idCasa}`}} className="ml-2 btn btn-outline-warning">Modificar</Link>
-                                <button type="button" onClick={()=>props.eliminarPropiedad(propiedad.idCasa)} className="ml-2 btn btn-outline-danger">Eliminar</button>
+                                <Link to={{pathname:`/propiedad/edit/${propiedad.id}`}} className="ml-2 btn btn-outline-warning">Modificar</Link>
+                                <button type="button" onClick={()=>props.eliminarPropiedad(propiedad.id)} className="ml-2 btn btn-outline-danger">Eliminar</button>
                                 <button type="button" onClick={()=>props.switchEstadoPropiedadEnPagina(propiedad.idCasa)} className={`ml-2 btn btn-outline-${(propiedad.activo)?`info`:`success`}`}>{(propiedad.activo)?`Ocultar en web`:`Habilitar en web`}</button>
                             </td>
                         </tr>
