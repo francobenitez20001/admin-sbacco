@@ -41,7 +41,9 @@ const NewPropiedad = (props) => {
         pileta:"Si",
         s_cubierta:"",
         s_semicubierta:"",
-        s_terreno:""
+        s_terreno:"",
+        s_total:"0",
+        u_medida:"metros cuadrados"
     })
     const [formServiciosValues, setFormServiciosValues] = useState({
         agua:"corriente",
@@ -204,7 +206,8 @@ const NewPropiedad = (props) => {
                 pileta:"-",
                 s_cubierta:"",
                 s_semicubierta:"",
-                s_terreno:""
+                s_terreno:"",
+                s_total:"0"
             };
         }
         if(validar(formDatosTecnicosValues,'tecnico') || omite){
@@ -221,6 +224,8 @@ const NewPropiedad = (props) => {
                         'Error al insertar el dato técnico',
                         'error'
                     );
+                    document.getElementById('form-principal').classList.add('d-none');
+                    document.getElementById('form-tecnico').classList.remove('d-none');
                     return;
                 }
                 Swal.fire(
@@ -335,7 +340,7 @@ const NewPropiedad = (props) => {
             case 'tecnico':
                 if(state.cochera !== '' && state.dormitorios !== '' && state.idCasa !== '' &&
                 state.pass.trim() !== '' && state.pileta.trim() !== '' && state.s_cubierta.trim() !== '' && 
-                state.s_semicubierta.trim() !== '' && state.s_terreno.trim() !== ''){
+                state.s_semicubierta.trim() !== '' && state.s_total.trim() !== '' && state.s_terreno.trim() !== ''){
                     setError(false);
                     validation = true;
                 }

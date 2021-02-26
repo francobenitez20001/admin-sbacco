@@ -145,21 +145,43 @@ const FormAddPropiedad = (props) => {
                 Datos técnicos:
                 <hr/>
                 <div className="row">
-                    <div className="col-12 col-md-6">
-                        <input type="hidden" name="idCasa"/>
-                        <input type="hidden" name="pass"/>
-                        <div className="input-group mt-3">
-                            <div className="input-group-prepend">
-                                <div className="input-group-text">Dormitorios</div>
-                            </div>
-                            <input type="text" name="dormitorios" onChange={props.handleChangeTecnico} placeholder="Ingrese cantidad de dormitorios" className="form-control" required/>
-                        </div>
+                    <div className="col-12 col-md-4">
                         <div className="input-group mt-3 mb-2">
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Superf. Cubierta</div>
                             </div>
                             <input type="text" name="s_cubierta" onChange={props.handleChangeTecnico} placeholder="Superficie cubierta en m2" className="form-control" required/>
                         </div>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <div className="input-group mt-3">
+                            <div className="input-group-prepend">
+                                <div className="input-group-text">Super. Semicubierta</div>
+                            </div>
+                            <input type="text" onChange={props.handleChangeTecnico} name="s_semicubierta" placeholder="Superficie semicubierta en m2" className="form-control" required/>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <div className="input-group mt-3 mb-2">
+                            <div className="input-group-prepend">
+                                <div className="input-group-text">Super. Terreno</div>
+                            </div>
+                            <input type="text" onChange={props.handleChangeTecnico} name="s_terreno" placeholder="Superficie del terreno" className="form-control" required/>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <div className="input-group mt-3 mb-2">
+                            <div className="input-group-text">Sup. Total</div>
+                            <input type="text" className="form-control" name="s_total" onChange={props.handleChangeTecnico} value={props.formDatosTecnicosValues.s_total}/>
+                            <div className="input-group-text">
+                                <select onChange={props.handleChangeTecnico} name="u_medida">
+                                    <option value="metros cuadrados">M2</option>
+                                    <option value="hectareas">Hec.</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-2">
                         <div className="input-group mt-3 mb-2">
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Pileta</div>
@@ -170,19 +192,7 @@ const FormAddPropiedad = (props) => {
                             </select>
                         </div>
                     </div>
-                    <div className="col-12 col-md-6">
-                        <div className="input-group mt-3">
-                            <div className="input-group-prepend">
-                                <div className="input-group-text">Super. Semicubierta</div>
-                            </div>
-                            <input type="text" onChange={props.handleChangeTecnico} name="s_semicubierta" placeholder="Superficie semicubierta en m2" className="form-control" required/>
-                        </div>
-                        <div className="input-group mt-3 mb-2">
-                            <div className="input-group-prepend">
-                                <div className="input-group-text">Super. Terreno</div>
-                            </div>
-                            <input type="text" onChange={props.handleChangeTecnico} name="s_terreno" placeholder="Superficie del terreno" className="form-control" required/>
-                        </div>
+                    <div className="col-12 col-md-2">
                         <div className="input-group mt-3 mb-2">
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Cochera</div>
@@ -191,6 +201,16 @@ const FormAddPropiedad = (props) => {
                                 <option value="Si">Si</option>
                                 <option value="No">No</option>
                             </select>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <input type="hidden" name="idCasa"/>
+                        <input type="hidden" name="pass"/>
+                        <div className="input-group mt-3">
+                            <div className="input-group-prepend">
+                                <div className="input-group-text">Dormitorios</div>
+                            </div>
+                            <input type="text" name="dormitorios" onChange={props.handleChangeTecnico} placeholder="Ingrese cantidad de dormitorios" className="form-control" required/>
                         </div>
                     </div>
                 </div>

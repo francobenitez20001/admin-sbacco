@@ -71,7 +71,9 @@ const EditPropiedad = (props) => {
                     pileta:data.data[0].pileta,
                     s_cubierta:data.data[0].s_cubierta,
                     s_semicubierta:data.data[0].s_semicubierta,
-                    s_terreno:data.data[0].s_terreno
+                    s_terreno:data.data[0].s_terreno,
+                    s_total:data.data[0].s_total || '0',
+                    u_medida:data.data[0].u_medida
                 });
                 setFormServiciosValues({
                     agua:data.data[0].agua,
@@ -220,7 +222,9 @@ const EditPropiedad = (props) => {
                 pileta:"-",
                 s_cubierta:"",
                 s_semicubierta:"",
-                s_terreno:""
+                s_terreno:"",
+                s_total:"0",
+                u_medida:"metros cuadrados"
             };
         }
         if(validar(formDatosTecnicosValues,'tecnico' || omite)){
@@ -277,7 +281,7 @@ const EditPropiedad = (props) => {
             case 'tecnico':
                 if(state.cochera !== '' && state.dormitorios !== '' && state.idCasa !== '' &&
                 state.pass.trim() !== '' && state.pileta.trim() !== '' && state.s_cubierta.trim() !== '' && 
-                state.s_semicubierta.trim() !== '' && state.s_terreno.trim() !== ''){
+                state.s_semicubierta.trim() !== '' && state.s_terreno.trim() !== '' && state.s_total.trim() !== ''){
                     setError(false);
                     validation = true;
                 }
