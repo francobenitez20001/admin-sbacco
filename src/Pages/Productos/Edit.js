@@ -200,12 +200,7 @@ const EditPropiedad = (props) => {
                     'error'
                 ) 
                 document.getElementById('form-principal').classList.add('d-none');
-                if(formDatosPrincipalesValues.idCategoria==3){
-                    document.getElementById('form-tecnico').classList.add('d-none');
-                    document.getElementById('form-servicio').classList.remove('d-none');
-                }else{
-                    document.getElementById('form-tecnico').classList.remove('d-none');
-                }
+                document.getElementById('form-tecnico').classList.remove('d-none');
             })
         };
     }
@@ -216,14 +211,10 @@ const EditPropiedad = (props) => {
         if(omite){
             datosTecnicos = {
                 idCasa:formDatosTecnicosValues.idCasa,
-                cochera:"-",
+                cochera:"No",
                 dormitorios:0,
                 pass:"ZAQ12wsx",
-                pileta:"-",
-                s_cubierta:"",
-                s_semicubierta:"",
-                s_terreno:"",
-                s_total:"0",
+                pileta:"No",
                 u_medida:"metros cuadrados"
             };
         }
