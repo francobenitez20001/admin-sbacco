@@ -157,6 +157,7 @@ const NewPropiedad = (props) => {
     }
 
     const handleChangeServicios = event=>{
+        console.log('jeje');
         setFormServiciosValues({
             ...formServiciosValues,
             [event.target.name]:event.target.value
@@ -376,7 +377,7 @@ const NewPropiedad = (props) => {
             formServiciosValues={formServiciosValues}
             handleChangePrincipal={handleChangePrincipal}
             handleChangeTecnico={handleChangeTecnico}
-            handleChangeServicios={handleChangeServicios}
+            handleChangeServicio={handleChangeServicios}
             handleSubmitPrincipal={handleSubmitPrincipal}
             handleSubmitTecnico={handleSubmitTecnico}
             handleSubmitServicio={handleSubmitServicio}

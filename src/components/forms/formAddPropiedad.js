@@ -16,7 +16,7 @@ const FormAddPropiedad = (props) => {
                     <div className="col-12 col-md-6">
                         <br/>
                         Categoria
-                        <select name="idCategoria" className="form-control" onChange={props.handleChangePrincipal}>
+                        <select name="idCategoria" className="form-control" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.idCategoria}>
                             {props.categorias.map(categoria=>(
                                 <option key={categoria.id} value={categoria.id}>{categoria.categoria}</option>
                             ))}
@@ -25,7 +25,7 @@ const FormAddPropiedad = (props) => {
                     <div className="col-12 col-md-6">
                         <br/>
                         Tipo de operación
-                        <select name="idOperacion" className="form-control" onChange={props.handleChangePrincipal}>
+                        <select name="idOperacion" className="form-control" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.idOperacion}>
                             {props.operaciones.map(operacion=>(
                                 <option key={operacion.id} value={operacion.id}>{operacion.operacion}</option>
                             ))}
@@ -34,7 +34,7 @@ const FormAddPropiedad = (props) => {
                     <div className="col-12 col-md-4">
                         <br/>
                         Partido
-                        <select name="idPartido" className="form-control" onChange={props.handleChangePrincipal}>
+                        <select name="idPartido" className="form-control" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.idPartido}>
                             {props.partidos.map(partido=>(
                                 <option key={partido.id} value={partido.id}>{partido.partido}</option>
                             ))}
@@ -43,7 +43,7 @@ const FormAddPropiedad = (props) => {
                     <div className="col-12 col-md-4">
                         <br/>
                         Localidades
-                        <select name="idLocalidad" className="form-control" onChange={props.handleChangePrincipal}>
+                        <select name="idLocalidad" className="form-control" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.idLocalidad}>
                             <option value="">Selecciona localidad</option>
                             {props.localidadesFiltradas.map(localidad=>(
                                 <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
@@ -102,15 +102,15 @@ const FormAddPropiedad = (props) => {
                         {/* <input type="text" name="direccion" placeholder="Dirección" className="form-control" onChange={props.handleChangePrincipal} required/> */}
                     </div>
                 </div>
-                <textarea name="descripcion" className="form-control mt-3" placeholder="Describa la propiedad" cols="30" rows="10" required onChange={props.handleChangePrincipal}></textarea>
+                <textarea name="descripcion" className="form-control mt-3" placeholder="Describa la propiedad" cols="30" rows="10" required onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.description}></textarea>
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <br/>
-                        <input required type="text" name="precio" placeholder="Precio" className="form-control" onChange={props.handleChangePrincipal} required/>
+                        <input required value={props.formDatosPrincipalesValues.precio} type="text" name="precio" placeholder="Precio" className="form-control" onChange={props.handleChangePrincipal} required/>
                     </div>
                     <div className="col-12 col-md-6">
                         <br/>
-                        <select required name="estado" className="form-control" id="" onChange={props.handleChangePrincipal}>
+                        <select required name="estado" className="form-control" id="" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.estado}>
                             <option value="Disponible">Disponible</option>
                             <option value="Ocupado">Ocupado</option>
                             <option value="Reservado">Reservado</option>
@@ -124,14 +124,14 @@ const FormAddPropiedad = (props) => {
                                 Mostrar Estado en la publicación
                             </div>
                         </div>
-                        <select required name="mostrarEstado" className="form-control" id="" onChange={props.handleChangePrincipal}>
+                        <select required name="mostrarEstado" className="form-control" id="" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.mostrarEstado}>
                             <option value="si">Si</option>
                             <option value="no">No</option>
                         </select>
                     </div>
                     <div className="col-12 col-md-6">
                         <br/>
-                        <select required name="moneda" className="form-control" id="" onChange={props.handleChangePrincipal}>
+                        <select required name="moneda" className="form-control" id="" onChange={props.handleChangePrincipal} defaultValue={props.formDatosPrincipalesValues.moneda}>
                             <option value="dolar">Dolar</option>
                             <option value="pesos">Pesos</option>
                         </select>
@@ -150,7 +150,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Superf. Cubierta</div>
                             </div>
-                            <input type="text" name="s_cubierta" onChange={props.handleChangeTecnico} placeholder="Superficie cubierta en m2" className="form-control" required/>
+                            <input type="text" name="s_cubierta" value={props.formDatosTecnicosValues.s_cubierta} onChange={props.handleChangeTecnico} placeholder="Superficie cubierta en m2" className="form-control" required/>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
@@ -158,7 +158,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Super. Semicubierta</div>
                             </div>
-                            <input type="text" onChange={props.handleChangeTecnico} name="s_semicubierta" placeholder="Superficie semicubierta en m2" className="form-control" required/>
+                            <input type="text" onChange={props.handleChangeTecnico} value={props.formDatosTecnicosValues.s_semicubierta} name="s_semicubierta" placeholder="Superficie semicubierta en m2" className="form-control" required/>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
@@ -166,7 +166,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Super. Terreno</div>
                             </div>
-                            <input type="text" onChange={props.handleChangeTecnico} name="s_terreno" placeholder="Superficie del terreno" className="form-control" required/>
+                            <input type="text" onChange={props.handleChangeTecnico} value={props.formDatosTecnicosValues.s_terreno} name="s_terreno" placeholder="Superficie del terreno" className="form-control" required/>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
@@ -174,7 +174,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-text">Sup. Total</div>
                             <input type="text" className="form-control" name="s_total" onChange={props.handleChangeTecnico} value={props.formDatosTecnicosValues.s_total}/>
                             <div className="input-group-text">
-                                <select onChange={props.handleChangeTecnico} name="u_medida">
+                                <select onChange={props.handleChangeTecnico} defaultValue={props.formDatosTecnicosValues.u_medida} name="u_medida">
                                     <option value="metros cuadrados">M2</option>
                                     <option value="hectareas">Hec.</option>
                                 </select>
@@ -186,7 +186,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Pileta</div>
                             </div>
-                            <select name="pileta" onChange={props.handleChangeTecnico} className="form-control" id="">
+                            <select name="pileta" onChange={props.handleChangeTecnico} defaultValue={props.formDatosTecnicosValues.pileta} className="form-control" id="">
                                 <option value="Si">Si</option>
                                 <option value="No">No</option>
                             </select>
@@ -197,7 +197,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Cochera</div>
                             </div>
-                            <select name="cochera" onChange={props.handleChangeTecnico} className="form-control" id="">
+                            <select name="cochera" onChange={props.handleChangeTecnico} defaultValue={props.formDatosTecnicosValues.cochera} className="form-control" id="">
                                 <option value="Si">Si</option>
                                 <option value="No">No</option>
                             </select>
@@ -210,7 +210,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">Dormitorios</div>
                             </div>
-                            <input type="text" name="dormitorios" onChange={props.handleChangeTecnico} placeholder="Ingrese cantidad de dormitorios" className="form-control" required/>
+                            <input type="text" name="dormitorios" onChange={props.handleChangeTecnico} value={props.formDatosTecnicosValues.dormitorios} placeholder="Ingrese cantidad de dormitorios" className="form-control" required/>
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@ const FormAddPropiedad = (props) => {
                         <div className="input-group-prepend">
                         <div className="input-group-text">Electricidad</div>
                         </div>
-                        <select className="form-control" name="luz" onChange={props.handleChangeServicio}>
+                        <select className="form-control" name="luz" defaultValue={props.formServiciosValues.luz} onChange={props.handleChangeServicio}>
                             <option value="no">No</option>
                             <option value="si">Si</option>
                         </select>
@@ -235,7 +235,7 @@ const FormAddPropiedad = (props) => {
                         <div className="input-group-prepend">
                         <div className="input-group-text">Agua</div>
                         </div>
-                        <select className="form-control" onChange={props.handleChangeServicio} name="agua">
+                        <select className="form-control" defaultValue={props.formServiciosValues.agua} onChange={props.handleChangeServicio} name="agua">
                             <option value="corriente">Corriente</option>
                             <option value="pozo">Pozo</option>
                         </select>
@@ -244,7 +244,7 @@ const FormAddPropiedad = (props) => {
                         <div className="input-group-prepend">
                         <div className="input-group-text">Calefacción</div>
                         </div>
-                        <select className="form-control" name="calefaccion" onChange={props.handleChangeServicio}>
+                        <select className="form-control" defaultValue={props.formServiciosValues.calefaccion} name="calefaccion" onChange={props.handleChangeServicio}>
                             <option value="no">No</option>
                             <option value="si">Si</option>
                         </select>
@@ -255,7 +255,7 @@ const FormAddPropiedad = (props) => {
                         <div className="input-group-prepend">
                             <div className="input-group-text">Telefono</div>
                             </div>
-                            <select className="form-control" name="telefono" onChange={props.handleChangeServicio}>
+                            <select className="form-control" defaultValue={props.formServiciosValues.telefono} name="telefono" onChange={props.handleChangeServicio}>
                                 <option value="no">No</option>
                                 <option value="si">Si</option>
                             </select>
@@ -264,7 +264,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                             <div className="input-group-text">Gas</div>
                             </div>
-                            <select className="form-control" name="gas" onChange={props.handleChangeServicio}>
+                            <select className="form-control" defaultValue={props.formServiciosValues.gas} name="gas" onChange={props.handleChangeServicio}>
                                 <option value="envasado">Envasado</option>
                                 <option value="natural">Natural</option>
                             </select>
@@ -273,7 +273,7 @@ const FormAddPropiedad = (props) => {
                             <div className="input-group-prepend">
                             <div className="input-group-text">Internet</div>
                             </div>
-                            <select className="form-control" name="internet" onChange={props.handleChangeServicio}>
+                            <select className="form-control" defaultValue={props.formServiciosValues.internet} name="internet" onChange={props.handleChangeServicio}>
                                 <option value="no">No</option>
                                 <option value="si">Si</option>
                             </select>
