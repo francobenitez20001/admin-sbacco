@@ -12,7 +12,7 @@ const AuthState = props=>{
         autenticado:false,
         usuario:null,
         error:null,
-        loading:false
+        loading:true
     }
 
     const [state,dispatch] = useReducer(authReducer,INITIAL_STATE);
@@ -28,9 +28,6 @@ const AuthState = props=>{
                 type:AUTH_REGISTER,
                 payload:respuesta.data
             });
-
-            //Obtener usuario
-            obtenerUsuario();
         } catch (error) {
             dispatch({
                 type:AUTH_ERROR,
@@ -66,11 +63,11 @@ const AuthState = props=>{
         })
         try {
             const respuesta = await clienteAxios.post('/auth/login',data);
+            console.log(respuesta.data);
             dispatch({
                 type:AUTH_LOGIN,
                 payload:respuesta.data
             });
-            obtenerUsuario();
         } catch (error) {
             dispatch({
                 type:AUTH_ERROR,

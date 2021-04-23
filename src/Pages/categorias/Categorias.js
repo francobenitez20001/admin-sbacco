@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Loader from '../../components/Loader/Loader';
 import {API} from '../../config';
-import {useUser} from 'reactfire';
 const MySwal = withReactContent(Swal)
 
 const Categorias = () => {
@@ -13,8 +12,6 @@ const Categorias = () => {
     useEffect(() => {
         getCategorias();
     }, []);
-    let user = useUser();
-    if (!user) return window.location.assign('/login');
     
     const getCategorias = async()=>{
         fetch(`${API}/categorias`).then(res=>res.json()).then(data=>{

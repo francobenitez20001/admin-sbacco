@@ -44,7 +44,8 @@ const App = () => {
             <BrowserRouter>
                 <Layout>
                     <Switch>
-                        <Route exact path="/" component={Home}/>
+                        <RutaPrivada exact path="/" component={Home}/>
+                        <Route exact path="/login" component={Login}/>
                         <RutaPrivada exact path="/propiedades" component={Productos}/>
                         <RutaPrivada exact path="/categorias" component={Categorias}/>
                         <RutaPrivada exact path="/ubicaciones" component={Ubicaciones}/>
@@ -67,7 +68,6 @@ const App = () => {
                         <RutaPrivada exact path="/partido/edit/:id" component={EditPartido}/>
                         <RutaPrivada exact path="/contacto" component={Contacto}/>
                         <RutaPrivada exact path="/contacto/edit/:id" component={EditContacto}/>
-                        <RutaPrivada exact path="/login" component={Login}/>
                     </Switch>
                 </Layout>
             </BrowserRouter>

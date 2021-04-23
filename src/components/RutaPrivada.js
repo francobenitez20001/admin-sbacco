@@ -7,12 +7,11 @@ const RutaPrivada = ({component:Component,...props}) => {
     useEffect(() => {
         obtenerUsuario();
     }, [])
-
     return (
         <Route
             {...props}
             render={props=>!autenticado && !loading?(
-                <Redirect to="/"/>
+                <Redirect to="/login"/>
             ):(
                 <Component {...props}/>
             )}

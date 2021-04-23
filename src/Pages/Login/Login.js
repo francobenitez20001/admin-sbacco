@@ -1,54 +1,66 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Error from '../../components/Error';
 import Loader from '../../components/Loader/Loader';
-import 'firebase/auth';
-import {useFirebaseApp,useUser} from 'reactfire';
+import {AuthContext} from '../../context/auth/authContext';
+const Swal = require('sweetalert2');
 
-const Auth = () => {
-    const firebase = useFirebaseApp();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
-    const [loader, setloader] = useState(false);
+const Auth = (props) => {
+
+    const [formValues, setFormValues] = useState({
+        email:'',
+        pw:''
+    });
+    const [errorForm, setErrorForm] = useState(false);
+    const {loading,error,autenticado,login,obtenerUsuario} = useContext(AuthContext)
+
+    useEffect(() => {
+        obtenerUsuario();
+    }, [])
+
+    useEffect(() => {
+        if(autenticado){
+            if(formValues.email.trim() !== ""){
+                Swal.fire('Bienvenido/a','','success').then(()=>props.history.push('/'));
+            }else{
+                props.history.push('/')
+            }
+        }
+    }, [autenticado])
+
 
     const handleSubmit = e=>{
         e.preventDefault();
-        setloader(true);
-        if(email.trim()==='' || password.trim()===''){
-            setloader(false);
-            setError(true);
+        const {email,pw} = formValues;
+        if(email.trim()==='' || pw.trim()===''){
+            setErrorForm('Complete todos los campos');
             return;
         }
-        setError(false);
-        firebase.auth().signInWithEmailAndPassword(email,password).then(res=>{
-            setloader(false);
-            window.location.assign('/');
-        }).catch(err=>{
-            setloader(false);
-            if(err.code === 'auth/wrong-password'){
-                setError(true)
-            };
-        })
+        if(pw.length<6){
+            setErrorForm('La contraseña es demasiado corta');
+            return;
+        }
+        setErrorForm(false);
+        login(formValues);
     }
 
-    const user = useUser();
-    if(user) return window.location.assign('/');
-
-    const logout = async()=>{
-        await firebase.auth().signOut();
+    const handleChange = e=>{
+        setFormValues({
+            ...formValues,
+            [e.target.name]:e.target.value
+        })
     }
 
     return (
         <div className="container mt-5">
             <h2 className="my-4">Ingrese su cuenta para continuar</h2>
             <form className="form-group" onSubmit={handleSubmit}>
-                {(error)?<Error message="Email o contraseña incorrectos"/>:null}
-                {(loader)?<Loader/>:null}
-                <input type="email" placeholder="Email" className="form-control my-3" name="email" onChange={(e)=>setEmail(e.target.value)}/>
-                <input type="password" placeholder="Contraseña" className="form-control my-3" name="password" onChange={(e)=>setPassword(e.target.value)}/>
+                {(errorForm)?<Error message={errorForm}/>:null}
+                {(error)?<Error message={error.msg}/>:null}
+                {(loading)?<Loader/>:null}
+                <input type="email" placeholder="Email" className="form-control my-3" name="email" onChange={handleChange}/>
+                <input type="password" placeholder="Contraseña" className="form-control my-3" name="pw" onChange={handleChange}/>
                 <input type="submit" value="Ingresar" className="btn btn-secondary"/>
             </form>
-            {(user)?<button onClick={logout}>Cerrar sesión</button>:null}
         </div>
     );
 }
