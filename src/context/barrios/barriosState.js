@@ -3,7 +3,7 @@ import {BarriosContext} from './barriosContext';
 import barriosReducer from './barriosReducer';
 import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/token';
-import { BARRIOS_ERROR, BARRIOS_LOADING, BARRIOS_TRAER_TODOS, BARRIOS_TRAER_UNO } from '../../types';
+import { BARRIOS_AGREGAR, BARRIOS_ELIMINAR, BARRIOS_ERROR, BARRIOS_LOADING, BARRIOS_MODIFICAR, BARRIOS_TRAER_TODOS, BARRIOS_TRAER_UNO } from '../../types';
 
 const BarriosState = (props)=>{
 
@@ -57,6 +57,65 @@ const BarriosState = (props)=>{
         }
     }
 
+    const modificar = async (data,id)=>{
+        dispatch({
+            type:BARRIOS_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            await clienteAxios.put(`/barrios/${id}`,data);
+            dispatch({
+                type:BARRIOS_MODIFICAR
+            })
+            return;
+        } catch (error) {
+            dispatch({
+                type:BARRIOS_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
+    const agregar = async data=>{
+        dispatch({
+            type:BARRIOS_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            await clienteAxios.post('/barrios',data);
+            dispatch({type:BARRIOS_AGREGAR});
+            return;
+        } catch (error) {
+            dispatch({
+                type:BARRIOS_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
+    const eliminar = async id=>{
+        dispatch({
+            type:BARRIOS_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            await clienteAxios.delete(`/barrios/${id}`);
+            dispatch({type:BARRIOS_ELIMINAR});
+            return;
+        } catch (error) {
+            dispatch({
+                type:BARRIOS_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
     return(
         <BarriosContext.Provider
             value={{
@@ -65,7 +124,10 @@ const BarriosState = (props)=>{
                 error:state.error,
                 barrio:state.barrio,
                 traerTodos,
-                traerUno
+                traerUno,
+                agregar,
+                modificar,
+                eliminar
             }}
         >
             {props.children}

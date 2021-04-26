@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
 const TablaBarrios = () => {
-    const {data,loading,error,traerTodos} = useContext(BarriosContext);
+    const {data,loading,error,traerTodos,eliminar} = useContext(BarriosContext);
     useEffect(() => {
         traerTodos();
     }, []);
@@ -21,16 +21,22 @@ const TablaBarrios = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Eliminar!',
-          }).then((result) => {
+          }).then(async(result) => {
             if (result.value) {
-                
+                await eliminar(id);
+                Swal.fire('Eliminado','El barrio se ha eliminado correctamente','success').then(traerTodos());
             }
         })
+    }
+
+    if(error && !loading){
+        Swal.fire('Error',error,'error');
     }
 
     return (
         <>
             <h3 className="my-4 ml-2">Tabla de administración de Barrios</h3>
+            {loading ? <Loader/> :
             <table className="table text-center">
                 <thead className="thead-dark">
                 <tr>
@@ -43,7 +49,7 @@ const TablaBarrios = () => {
                 </tr>
                 </thead>
                 <tbody>
-                    {loading ? <Loader/> : 
+                    { 
                     data.map(b=>(
                         <tr key={b.idBarrio}>
                             <th>{b.idBarrio}</th>
@@ -58,6 +64,7 @@ const TablaBarrios = () => {
                     }
                 </tbody>
             </table>
+            }
         </>
     );
 }

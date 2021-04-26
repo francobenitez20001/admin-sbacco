@@ -1,11 +1,10 @@
 import React from 'react';
-import FormEditBarrio from '../../components/forms/formEditBarrio';
+import FormBarrio from '../../components/forms/formBarrio';
 
 const EditBarrio = (props) => {
 
     return (
-        <FormEditBarrio
-            id={props.match.params.id}/>
+        <FormBarrio id={props.match.params.id}/>
     );
 }
  
