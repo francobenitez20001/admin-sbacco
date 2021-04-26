@@ -37,40 +37,49 @@ import NewBarrio from '../Pages/Barrios/New';
 
 import AuthState from "../context/auth/authState";
 import RutaPrivada from './RutaPrivada';
+import BarriosState from '../context/barrios/barriosState';
+import PartidosState from '../context/partidos/partidosState';
+import LocalidadesState from '../context/localidades/localidadesState';
 
 const App = () => {
     return (
         <AuthState>
-            <BrowserRouter>
-                <Layout>
-                    <Switch>
-                        <RutaPrivada exact path="/" component={Home}/>
-                        <Route exact path="/login" component={Login}/>
-                        <RutaPrivada exact path="/propiedades" component={Productos}/>
-                        <RutaPrivada exact path="/categorias" component={Categorias}/>
-                        <RutaPrivada exact path="/ubicaciones" component={Ubicaciones}/>
-                        <RutaPrivada exact path="/barrios" component={Barrios}/>
-                        <RutaPrivada exact path="/operaciones" component={Operaciones}/>
-                        <RutaPrivada exact path="/nosotros" component={Nosotros}/>
-                        <RutaPrivada exact path="/partidos" component={Partidos}/>
-                        <RutaPrivada exact path="/nosotros/modificar/:id" component={EditNosotros}/>
-                        <RutaPrivada exact path="/propiedad/add" component={NewPropiedad}/>
-                        <RutaPrivada exact path="/propiedad/edit/:id" component={EditPropiedad}/>
-                        <RutaPrivada exact path="/categoria/add" component={NewCategoria}/>
-                        <RutaPrivada exact path="/categoria/edit/:id" component={EditCategoria}/>
-                        <RutaPrivada exact path="/ubicacion/add" component={NewUbicacion}/>
-                        <RutaPrivada exact path="/ubicacion/edit/:id" component={EditUbicacion}/>
-                        <RutaPrivada exact path="/barrios/add" component={NewBarrio}/>
-                        <RutaPrivada exact path="/barrios/edit/:id" component={EditBarrio}/>
-                        <RutaPrivada exact path="/operacion/add" component={NewOperacion}/>
-                        <RutaPrivada exact path="/operacion/edit/:id" component={EditOperacion}/>
-                        <RutaPrivada exact path="/partido/add" component={NewPartido}/>
-                        <RutaPrivada exact path="/partido/edit/:id" component={EditPartido}/>
-                        <RutaPrivada exact path="/contacto" component={Contacto}/>
-                        <RutaPrivada exact path="/contacto/edit/:id" component={EditContacto}/>
-                    </Switch>
-                </Layout>
-            </BrowserRouter>
+            <BarriosState>
+                <PartidosState>
+                    <LocalidadesState>
+                        <BrowserRouter>
+                            <Layout>
+                                <Switch>
+                                    <RutaPrivada exact path="/" component={Home}/>
+                                    <Route exact path="/login" component={Login}/>
+                                    <RutaPrivada exact path="/propiedades" component={Productos}/>
+                                    <RutaPrivada exact path="/categorias" component={Categorias}/>
+                                    <RutaPrivada exact path="/ubicaciones" component={Ubicaciones}/>
+                                    <RutaPrivada exact path="/barrios" component={Barrios}/>
+                                    <RutaPrivada exact path="/operaciones" component={Operaciones}/>
+                                    <RutaPrivada exact path="/nosotros" component={Nosotros}/>
+                                    <RutaPrivada exact path="/partidos" component={Partidos}/>
+                                    <RutaPrivada exact path="/nosotros/modificar/:id" component={EditNosotros}/>
+                                    <RutaPrivada exact path="/propiedad/add" component={NewPropiedad}/>
+                                    <RutaPrivada exact path="/propiedad/edit/:id" component={EditPropiedad}/>
+                                    <RutaPrivada exact path="/categoria/add" component={NewCategoria}/>
+                                    <RutaPrivada exact path="/categoria/edit/:id" component={EditCategoria}/>
+                                    <RutaPrivada exact path="/ubicacion/add" component={NewUbicacion}/>
+                                    <RutaPrivada exact path="/ubicacion/edit/:id" component={EditUbicacion}/>
+                                    <RutaPrivada exact path="/barrios/add" component={NewBarrio}/>
+                                    <RutaPrivada exact path="/barrios/edit/:id" component={EditBarrio}/>
+                                    <RutaPrivada exact path="/operacion/add" component={NewOperacion}/>
+                                    <RutaPrivada exact path="/operacion/edit/:id" component={EditOperacion}/>
+                                    <RutaPrivada exact path="/partido/add" component={NewPartido}/>
+                                    <RutaPrivada exact path="/partido/edit/:id" component={EditPartido}/>
+                                    <RutaPrivada exact path="/contacto" component={Contacto}/>
+                                    <RutaPrivada exact path="/contacto/edit/:id" component={EditContacto}/>
+                                </Switch>
+                            </Layout>
+                        </BrowserRouter>
+                    </LocalidadesState>
+                </PartidosState>
+            </BarriosState>
         </AuthState>
     );  
 }

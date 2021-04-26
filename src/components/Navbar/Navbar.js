@@ -3,9 +3,11 @@ import {Link} from 'react-router-dom';
 import {AuthContext} from '../../context/auth/authContext';
 const Navbar = () => {
 
-    const {autenticado} = useContext(AuthContext);
-    const logout = ()=>{
-        
+    const {autenticado,logout} = useContext(AuthContext);
+
+    const handleLogout = ()=>{
+        logout();
+        window.location.assign('/login');
     }
 
     return (
@@ -37,7 +39,7 @@ const Navbar = () => {
                     </li>
                     {(!autenticado)?null:
                         <li className="nav-item">
-                            <button onClick={logout} type="button" className="btn btn-danger">Salir</button>
+                            <button onClick={handleLogout} type="button" className="btn btn-danger">Salir</button>
                         </li>
                     }
                 </ul>

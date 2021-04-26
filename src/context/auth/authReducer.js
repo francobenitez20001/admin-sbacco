@@ -15,6 +15,7 @@ const authReducer = (state,action)=>{
         case AUTH_OBTENER_USUARIO:
             return {...state,usuario:action.payload,autenticado:true,loading:false}
         case AUTH_LOGOUT:
+            localStorage.removeItem('token');
             return {...state,autenticado:false,usuario:null,token:null}
         default:
             return state;

@@ -63,7 +63,6 @@ const AuthState = props=>{
         })
         try {
             const respuesta = await clienteAxios.post('/auth/login',data);
-            console.log(respuesta.data);
             dispatch({
                 type:AUTH_LOGIN,
                 payload:respuesta.data

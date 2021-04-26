@@ -1,6 +1,33 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-const TablaBarrios = (props) => {
+import {BarriosContext} from '../../context/barrios/barriosContext';
+import Loader from '../Loader/Loader';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
+
+const TablaBarrios = () => {
+    const {data,loading,error,traerTodos} = useContext(BarriosContext);
+    useEffect(() => {
+        traerTodos();
+    }, []);
+
+    const eliminarBarrio = id=>{
+        MySwal.fire({
+            title: '¿Desea eliminar el barrio?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar!',
+          }).then((result) => {
+            if (result.value) {
+                
+            }
+        })
+    }
+
     return (
         <>
             <h3 className="my-4 ml-2">Tabla de administración de Barrios</h3>
@@ -16,17 +43,19 @@ const TablaBarrios = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    {props.barrios.map(b=>(
+                    {loading ? <Loader/> : 
+                    data.map(b=>(
                         <tr key={b.idBarrio}>
                             <th>{b.idBarrio}</th>
                             <td>{b.barrio}</td>
                             <td>{b.localidad}</td>
                             <td className="text-center">
                                 <Link to={{pathname:`/barrios/edit/${b.idBarrio}`}} className="ml-2 btn btn-outline-warning">Modificar</Link>
-                                <button type="button" onClick={()=>props.eliminarBarrio(b.idBarrio)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
+                                <button type="button" onClick={()=>eliminarBarrio(b.idBarrio)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
                             </td>
                         </tr>
-                    ))}
+                    ))
+                    }
                 </tbody>
             </table>
         </>
