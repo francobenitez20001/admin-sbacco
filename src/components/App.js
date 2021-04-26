@@ -5,7 +5,7 @@ import Layout from './Layout';
 import Home from '../Pages/Home/Home';
 import Productos from '../Pages/Productos/Productos';
 import Categorias from '../Pages/categorias/Categorias';
-import Ubicaciones from '../Pages/ubicaciones/Ubicaciones';
+import Localidades from '../Pages/localidades/Localidades';
 import Operaciones from '../Pages/operaciones/Operaciones';
 import Nosotros from '../Pages/nosotros/Nosotros';
 
@@ -15,8 +15,8 @@ import EditPropiedad from '../Pages/Productos/Edit';
 import NewCategoria from '../Pages/categorias/New';
 import EditCategoria from '../Pages/categorias/Edit';
 
-import NewUbicacion from '../Pages/ubicaciones/New';
-import EditUbicacion from '../Pages/ubicaciones/Edit';
+import NewLocalidad from '../Pages/localidades/New';
+import EditLocalidad from '../Pages/localidades/Edit';
 
 import NewOperacion from '../Pages/operaciones/New';
 import EditOperacion from '../Pages/operaciones/Edit';
@@ -54,7 +54,7 @@ const App = () => {
                                     <Route exact path="/login" component={Login}/>
                                     <RutaPrivada exact path="/propiedades" component={Productos}/>
                                     <RutaPrivada exact path="/categorias" component={Categorias}/>
-                                    <RutaPrivada exact path="/ubicaciones" component={Ubicaciones}/>
+                                    <RutaPrivada exact path="/localidades" component={Localidades}/>
                                     <RutaPrivada exact path="/barrios" component={Barrios}/>
                                     <RutaPrivada exact path="/operaciones" component={Operaciones}/>
                                     <RutaPrivada exact path="/nosotros" component={Nosotros}/>
@@ -64,8 +64,8 @@ const App = () => {
                                     <RutaPrivada exact path="/propiedad/edit/:id" component={EditPropiedad}/>
                                     <RutaPrivada exact path="/categoria/add" component={NewCategoria}/>
                                     <RutaPrivada exact path="/categoria/edit/:id" component={EditCategoria}/>
-                                    <RutaPrivada exact path="/ubicacion/add" component={NewUbicacion}/>
-                                    <RutaPrivada exact path="/ubicacion/edit/:id" component={EditUbicacion}/>
+                                    <RutaPrivada exact path="/localidades/add" component={NewLocalidad}/>
+                                    <RutaPrivada exact path="/localidades/edit/:id" component={EditLocalidad}/>
                                     <RutaPrivada exact path="/barrios/add" component={NewBarrio}/>
                                     <RutaPrivada exact path="/barrios/edit/:id" component={EditBarrio}/>
                                     <RutaPrivada exact path="/operacion/add" component={NewOperacion}/>

@@ -3,7 +3,7 @@ import {LocalidadesContext} from './localidadesContext';
 import localidadesReducer from './localidadesReducer';
 import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/token';
-import { LOCALIDADES_ERROR, LOCALIDADES_FILTRAR, LOCALIDADES_LOADING, LOCALIDADES_TRAER_TODAS, LOCALIDADES_TRAER_UNO } from '../../types';
+import { LOCALIDADES_AGREGAR, LOCALIDADES_ELIMINAR, LOCALIDADES_ERROR, LOCALIDADES_FILTRAR, LOCALIDADES_LOADING, LOCALIDADES_MODIFICAR, LOCALIDADES_TRAER_TODAS, LOCALIDADES_TRAER_UNO } from '../../types';
 
 const LocalidadesState = (props)=>{
 
@@ -45,10 +45,10 @@ const LocalidadesState = (props)=>{
                 tokenAuth(localStorage.getItem('token'));
             }
             const reqLocalidad = await clienteAxios.get(`/localidades/${id}`);
-            const {data:{localidades}} = reqLocalidad;
+            const {data:{localidad}} = reqLocalidad;
             dispatch({
                 type:LOCALIDADES_TRAER_UNO,
-                payload:localidades
+                payload:localidad[0]
             })
         } catch (error) {
             dispatch({
@@ -73,6 +73,65 @@ const LocalidadesState = (props)=>{
         }
     }
 
+    const modificar = async (data,id)=>{
+        dispatch({
+            type:LOCALIDADES_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            await clienteAxios.put(`/localidades/${id}`,data);
+            dispatch({
+                type:LOCALIDADES_MODIFICAR
+            })
+            return;
+        } catch (error) {
+            dispatch({
+                type:LOCALIDADES_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
+    const agregar = async data=>{
+        dispatch({
+            type:LOCALIDADES_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            await clienteAxios.post('/localidades',data);
+            dispatch({type:LOCALIDADES_AGREGAR});
+            return;
+        } catch (error) {
+            dispatch({
+                type:LOCALIDADES_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
+    const eliminar = async id=>{
+        dispatch({
+            type:LOCALIDADES_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            await clienteAxios.delete(`/localidades/${id}`);
+            dispatch({type:LOCALIDADES_ELIMINAR});
+            return;
+        } catch (error) {
+            dispatch({
+                type:LOCALIDADES_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
 
 
     return(
@@ -85,7 +144,10 @@ const LocalidadesState = (props)=>{
                 filtradas:state.filtradas,
                 traerTodas,
                 traerUno,
-                filtrarPorIdPartido
+                filtrarPorIdPartido,
+                agregar,
+                modificar,
+                eliminar
             }}
         >
             {props.children}
