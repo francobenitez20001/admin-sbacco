@@ -1,4 +1,4 @@
-import { BARRIOS_AGREGAR, BARRIOS_ELIMINAR, BARRIOS_ERROR, BARRIOS_LOADING, BARRIOS_MODIFICAR, BARRIOS_TRAER_TODOS, BARRIOS_TRAER_UNO } from "../../types";
+import { BARRIOS_AGREGAR, BARRIOS_ELIMINAR, BARRIOS_ERROR, BARRIOS_FILTRAR, BARRIOS_LOADING, BARRIOS_MODIFICAR, BARRIOS_TRAER_TODOS, BARRIOS_TRAER_UNO } from "../../types";
 
 const barriosReducer = (state,action)=>{
     switch (action.type) {
@@ -16,6 +16,8 @@ const barriosReducer = (state,action)=>{
             return {...state,loading:false,error:null}
         case BARRIOS_MODIFICAR:
             return {...state,loading:false,error:null}
+        case BARRIOS_FILTRAR:
+            return {...state,filtrados:action.payload}
         default:
             return state;
     }

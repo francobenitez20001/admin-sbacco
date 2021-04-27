@@ -3,13 +3,14 @@ import {BarriosContext} from './barriosContext';
 import barriosReducer from './barriosReducer';
 import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/token';
-import { BARRIOS_AGREGAR, BARRIOS_ELIMINAR, BARRIOS_ERROR, BARRIOS_LOADING, BARRIOS_MODIFICAR, BARRIOS_TRAER_TODOS, BARRIOS_TRAER_UNO } from '../../types';
+import { BARRIOS_AGREGAR, BARRIOS_ELIMINAR, BARRIOS_ERROR, BARRIOS_LOADING, BARRIOS_MODIFICAR, BARRIOS_TRAER_TODOS, BARRIOS_TRAER_UNO, BARRIOS_FILTRAR } from '../../types';
 
 const BarriosState = (props)=>{
 
     const INITIAL_STATE = {
         data:[],
         barrio:null,
+        filtrados:[],
         loading:false,
         error:null
     }
@@ -116,6 +117,21 @@ const BarriosState = (props)=>{
         }
     }
 
+    const filtrarPorIdLocalidad = id=>{
+        try {
+            const filtrados = state.data.filter(barrio=>barrio.idLocalidad == id);
+            dispatch({
+                type:BARRIOS_FILTRAR,
+                payload:filtrados
+            })
+        } catch (error) {
+            dispatch({
+                type:BARRIOS_ERROR,
+                payload:error.message
+            })
+        }
+    }
+
     return(
         <BarriosContext.Provider
             value={{
@@ -123,11 +139,13 @@ const BarriosState = (props)=>{
                 loading:state.loading,
                 error:state.error,
                 barrio:state.barrio,
+                filtrados:state.filtrados,
                 traerTodos,
                 traerUno,
                 agregar,
                 modificar,
-                eliminar
+                eliminar,
+                filtrarPorIdLocalidad
             }}
         >
             {props.children}
