@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-const TablaNosotros = (props) => {
+import Swal from 'sweetalert2';
+import {NosotrosContext} from '../../context/nosotros/nosotrosContext';
+import Loader from '../Loader/Loader';
+
+const TablaNosotros = () => {
+    const {data,loading,error,traerTodas} = useContext(NosotrosContext);
+
+    useEffect(() => {
+        traerTodas();
+    }, [])
+
+    if(error){
+        Swal.fire('Error',error,'error');
+    }
+
     return (
-        (!props.nosotros)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
+        loading ? <Loader/> :
         <>
             <h3 className="my-4 ml-2">Tabla de administración de nosotros</h3>
             <table className="table ">
@@ -15,9 +29,11 @@ const TablaNosotros = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{props.nosotros.contenido}</td>
-                    </tr>
+                    {data.map((info,key)=>(
+                        <tr key={key}>
+                            <td>{info.contenido}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>
