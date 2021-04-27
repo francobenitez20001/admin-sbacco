@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Link} from 'react-router-dom';
+import Swal from 'sweetalert2';
+import {ContactoContext} from '../../context/contacto/contactoContext';
+import Loader from '../Loader/Loader';
 
-const TablaContacto = (props) => {
+const TablaContacto = () => {
+    const {data,loading,error,traerInfo} = useContext(ContactoContext);
+
+    useEffect(() => {
+        traerInfo();
+    }, [])
+
+    if(error){
+        Swal.fire('Error',error,'error');
+    }
+
     return (
-        (!props.contacto)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
+        (!data.length)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
         <>
             <h3 className="my-4 ml-2">Tabla de administración de contacto</h3>
+            {loading ? <Loader/> : 
             <table className="table text-center">
                 <thead className="thead-dark">
                 <tr>
@@ -20,15 +34,18 @@ const TablaContacto = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{props.contacto.telefonoPrincipal}</td>
-                        <td>{props.contacto.whatsapp}</td>
-                        <td>{props.contacto.facebook.substr(0,30)}</td>
-                        <td>{props.contacto.instagram.substr(0,30)}</td>
-                        <td>{props.contacto.direccion.substr(0,30)}</td>
-                    </tr>
+                    {data.map((item,key)=>(
+                        <tr key={key}>
+                            <td>{item.telefonoPrincipal}</td>
+                            <td>{item.whatsapp}</td>
+                            <td>{item.facebook.substr(0,27)}...</td>
+                            <td>{item.instagram.substr(0,27)}...</td>
+                            <td>{item.direccion.substr(0,27)}...</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
+            }
         </>
     );
 }
