@@ -1,8 +1,42 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-const TablaCategorias = (props) => {
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { CategoriasContext } from "../../context/categorias/categoriasContext";
+import Loader from '../Loader/Loader';
+
+const MySwal = withReactContent(Swal);
+
+const TablaCategorias = () => {
+    const {data:categorias,loading,error,traerTodas,eliminar} = useContext(CategoriasContext);
+
+    useEffect(() => {
+        traerTodas();
+    }, [])
+
+    const eliminarCategoria = id=>{
+        MySwal.fire({
+            title: '¿Desea eliminar la categoria?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar!',
+          }).then(async(result) => {
+            if (result.value) {
+                await eliminar(id);
+                Swal.fire('Listo','La categoria ha sido eliminada','success').then(()=>traerTodas());
+            }
+        })
+    }
+
+    if(error){
+        Swal.fire('Error',error,'error');
+    }
+
     return (
-        (!props.categorias)?<div className="alert alert-warning text-center">No hay registros cargados</div>:
+        loading?<Loader/>:
         <>
             <h3 className="my-4 ml-2">Tabla de administración de categorias</h3>
             <table className="table text-center">
@@ -16,13 +50,13 @@ const TablaCategorias = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    {props.categorias.map(cat=>(
+                    {categorias.map(cat=>(
                         <tr key={cat.id}>
                             <td>{cat.id}</td>
                             <td>{cat.categoria}</td>
                             <td className="text-center">
                                 <Link to={{pathname:`/categoria/edit/${cat.id}`}} className=" ml-2 btn btn-outline-warning">Modificar</Link>
-                                <button type="button" onClick={()=>props.eliminarCategoria(cat.id)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
+                                <button type="button" onClick={()=>eliminarCategoria(cat.id)} className=" ml-2 btn btn-outline-danger">Eliminar</button>
                             </td>
                         </tr>
                     ))}
