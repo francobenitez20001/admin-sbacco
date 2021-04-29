@@ -271,7 +271,8 @@ const FormPropiedad = (props) => {
                 </div>
             </div>
             <br/>
-            <input type="submit" className="btn btn-info mt-3" style={{float: "right"}} value="Cargar y Continuar"/>
+            {props.id ? <input type="button" onClick={()=>switchForm()} className="btn btn-info mt-3" style={{float:"right"}} value="Omitir datos"/> : null}
+            <input type="submit" className="btn btn-info mt-3 mr-2" style={{float: "right"}} value="Cargar y Continuar"/>
             <br/><br/>
         </form>
     );

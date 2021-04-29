@@ -3,7 +3,7 @@ import {ImagenesContext} from './imagenesContext';
 import imagenesReducer from './imagenesReducer';
 import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/token';
-import { IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_HEADER, IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_VARIAS } from '../../types';
+import { IMAGENES_AGREGAR, IMAGENES_ELIMINAR, IMAGENES_ERROR, IMAGENES_LOADING, IMAGENES_MODIFICAR, IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_HEADER, IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_VARIAS, IMAGENES_TRAER_TODAS } from '../../types';
 
 const ImagenesState = (props)=>{
 
@@ -17,20 +17,90 @@ const ImagenesState = (props)=>{
 
     const [state, dispatch] = useReducer(imagenesReducer, INITIAL_STATE);
 
-    const traerTodas = async()=>{
-        
+    const traerImagenes = async(idCasa)=>{
+        dispatch({
+            type:IMAGENES_LOADING
+        })
+        try {
+            if(!localStorage.getItem('token')) return;
+            tokenAuth(localStorage.getItem('token'));
+            const reqImagenes = await clienteAxios.get(`/imagenes/${idCasa}`);
+            const {data:{imagenes}} = reqImagenes;
+            dispatch({
+                type:IMAGENES_TRAER_TODAS,
+                payload:imagenes
+            })
+        } catch (error) {
+            dispatch({
+                type:IMAGENES_ERROR,
+                payload:error.response.data
+            })
+        }
     }
 
-    const modificar = async (data,id)=>{
-        
+    const modificar = async (data)=>{
+        dispatch({
+            type:IMAGENES_LOADING
+        })
+        try {
+            if(!localStorage.getItem('token')) return;
+            tokenAuth(localStorage.getItem('token'));
+            await clienteAxios.put(`/imagenes`,data);
+            dispatch({
+                type:IMAGENES_MODIFICAR
+            })
+            return;
+        } catch (error) {
+            dispatch({
+                type:IMAGENES_ERROR,
+                payload:error.response.data
+            })
+        }
     }
 
-    const agregar = async data=>{
-        
+
+    const agregar = async (data,isHeader)=>{
+        dispatch({
+            type:IMAGENES_LOADING
+        })
+        try {
+            if(!localStorage.getItem('token')) return;
+            tokenAuth(localStorage.getItem('token'));
+            if(isHeader){
+                await clienteAxios.post('/imagenes',data);
+            }else{
+                await clienteAxios.post(`/imagenes/varios`,data);
+            }
+            dispatch({
+                type:IMAGENES_AGREGAR
+            });
+            return;
+        } catch (error) {
+            dispatch({
+                type:IMAGENES_ERROR,
+                payload:error.response.data
+            })
+        }
     }
 
-    const eliminar = async id=>{
-        
+    const eliminar = async (id,name)=>{
+        dispatch({
+            type:IMAGENES_LOADING
+        })
+        try {
+            if(!localStorage.getItem('token')) return;
+            tokenAuth(localStorage.getItem('token'));
+            await clienteAxios.delete(`/imagenes/${id}?name=${name}`);
+            dispatch({
+                type:IMAGENES_ELIMINAR
+            });
+            return;
+        } catch (error) {
+            dispatch({
+                type:IMAGENES_ERROR,
+                payload:error.response.data
+            })
+        }
     }
 
     const habilitarFormHeader = ()=>{
@@ -53,7 +123,7 @@ const ImagenesState = (props)=>{
                 error:state.error,
                 mostrarFormularioHeader:state.mostrarFormularioHeader,
                 mostrarFormularioVarias:state.mostrarFormularioVarias,
-                traerTodas,
+                traerImagenes,
                 agregar,
                 modificar,
                 eliminar,

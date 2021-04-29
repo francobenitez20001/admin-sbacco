@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import Loader from '../Loader/Loader';
 import { ServiciosContext } from "../../context/servicios/serviciosContext";
 import { PropiedadContext } from "../../context/propiedades/propiedadesContext";
 
@@ -154,7 +153,8 @@ const FormServicio = (props) => {
                     </div>
             </div>
             <br/>
-            <input type="submit" className="btn btn-info" name="" style={{float: "right"}} value="Guardar y Continuar"/>
+            {props.id ? <input type="button" onClick={()=>switchForm()} className="btn btn-info" style={{float:"right"}} value="Omitir datos"/> : null}
+            <input type="submit" className="btn btn-info mr-2" name="" style={{float: "right"}} value="Guardar y Continuar"/>
             <br/><br/>
         </form>
     );

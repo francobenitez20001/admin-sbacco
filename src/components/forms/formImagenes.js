@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import Swal from 'sweetalert2';
 import { ImagenesContext } from "../../context/imagenes/imagenesContext";
 import { PropiedadContext } from "../../context/propiedades/propiedadesContext";
+import Loader from "../Loader/Loader";
 
 const FormImagenes = () => {
-    const {habilitarFormVarias} = useContext(ImagenesContext);
+    const {loading,error,agregar,habilitarFormVarias} = useContext(ImagenesContext);
     const {idCasa} = useContext(PropiedadContext);
 
-    const handleSubmit = e=>{
+    const handleSubmit = async e=>{
         e.preventDefault();
         let data = new FormData(e.target);
         console.log(data.get('idCasa'));
@@ -15,12 +16,18 @@ const FormImagenes = () => {
             Swal.fire('Atención','Es obligatorio que cargues una imagen','warning');
             return;
         }
+        await agregar(data,false);
         Swal.fire('Listo','Imagenes agregadas','success').then(()=>{
             habilitarFormVarias();
         })
     }
 
+    if(error){
+        Swal.fire('Error',error,'error');
+    }
+
     return (
+        loading ? <Loader/> :
         <form className="form-group" id="form-imagenes" onSubmit={handleSubmit}>
             <label>Selecciona el resto de las imagenes</label>
             <br/>
