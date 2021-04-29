@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DatoTecnicoContext } from "../../context/datoTecnico/datoContext";
+import { PropiedadContext } from "../../context/propiedades/propiedadesContext";
 import Swal from 'sweetalert2';
 
-const FormDatoTecnico = () => {
+const FormDatoTecnico = (props) => {
 
     const [formValues, setFormValues] = useState({
         s_cubierta:'',
@@ -12,10 +13,49 @@ const FormDatoTecnico = () => {
         pileta:'Si',
         cochera:'Si',
         dormitorios:'',
-        u_medida:'metros cuadrados'
+        u_medida:'metros cuadrados',
+        idCasa:null
     });
     const [errorForm, setErrorForm] = useState(false);
-    const {switchForm} = useContext(DatoTecnicoContext);
+    const {data,error,traerInfo,switchForm,agregar,modificar} = useContext(DatoTecnicoContext);
+    const {propiedad,idCasa} = useContext(PropiedadContext);
+
+    useEffect(() => {
+        if(props.id){
+            traerInfo({
+                cochera:propiedad.cochera,
+                dormitorios:propiedad.dormitorios,
+                idCasa:propiedad.idCasa,
+                pileta:propiedad.pileta,
+                s_cubierta:propiedad.s_cubierta,
+                s_semicubierta:propiedad.s_semicubierta,
+                s_terreno:propiedad.s_terreno,
+                s_total:propiedad.s_total || '0',
+                u_medida:propiedad.u_medida
+            })
+        }
+    }, []);
+
+    useEffect(() => {
+        if(data && props.id){
+            setFormValues({
+                s_cubierta:`${data.s_cubierta}`,
+                s_semicubierta:`${data.s_semicubierta}`,
+                s_terreno:`${data.s_terreno}`,
+                s_total:`${data.s_total}`,
+                pileta:`${data.pileta}`,
+                cochera:`${data.cochera}`,
+                dormitorios:`${data.dormitorios}`,
+                u_medida:`${data.u_medida}`,
+                idCasa:`${data.idCasa}`
+            })
+        }else{
+            setFormValues({
+                ...formValues,
+                idCasa:idCasa
+            })
+        }
+    }, [data])
 
 
     const handleChange = e=>{
@@ -25,18 +65,37 @@ const FormDatoTecnico = () => {
         })
     }
 
-    const handleSubmit = e=>{
+    const handleSubmit = async e=>{
         e.preventDefault();
         const erroresDeForm = validarErrores();
         if(erroresDeForm){
             setErrorForm(`Te falta completar el campo ${erroresDeForm}`);
             return;
         }
+        if(props.id){
+            await modificar(formValues);
+        }else{
+            await agregar(formValues);
+        }
         Swal.fire('Listo','Se han agregado los datos técnicos','success').then(()=>switchForm());
     }
 
-    const omitirDatos = ()=>{
-
+    const omitirDatos = (e)=>{
+        if(!props.id){
+            setFormValues({
+                ...formValues,
+                cochera:"-",
+                dormitorios:"0",
+                pileta:"-",
+                s_cubierta:"-",
+                s_semicubierta:"-",
+                s_terreno:"-",
+                s_total:"0"
+            });
+            handleSubmit(e);
+        }else{
+            switchForm();
+        }
     }
 
     const validarErrores = ()=>{
@@ -45,11 +104,13 @@ const FormDatoTecnico = () => {
         }
     }
 
-    if(errorForm){
-        Swal.fire('Atención',errorForm,'warning').then(()=>setErrorForm(false));
+    if(errorForm || error){
+        let err = error ? error : errorForm;
+        Swal.fire('Atención',err,'error').then(()=>setErrorForm(false));
     }
 
     return (
+        false || (props.id && !formValues.idCasa) ? null :
         <form className="form-group" id="form-tecnico" onSubmit={handleSubmit}>
             <h6>Datos técnicos</h6>
             <div className="row">
@@ -95,6 +156,7 @@ const FormDatoTecnico = () => {
                             <div className="input-group-text">Pileta</div>
                         </div>
                         <select name="pileta" onChange={handleChange} defaultValue={formValues.pileta} className="form-control" id="">
+                            <option value="-">Omitir dato</option>
                             <option value="Si">Si</option>
                             <option value="No">No</option>
                         </select>
@@ -106,6 +168,7 @@ const FormDatoTecnico = () => {
                             <div className="input-group-text">Cochera</div>
                         </div>
                         <select name="cochera" onChange={handleChange} defaultValue={formValues.cochera} className="form-control" id="">
+                            <option value="-">Omitir dato</option>
                             <option value="Si">Si</option>
                             <option value="No">No</option>
                         </select>

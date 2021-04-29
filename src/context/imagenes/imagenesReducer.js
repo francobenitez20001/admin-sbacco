@@ -1,4 +1,4 @@
-import { IMAGENES_AGREGAR, IMAGENES_ELIMINAR, IMAGENES_ERROR, IMAGENES_LOADING, IMAGENES_MODIFICAR, IMAGENES_MOSTRAR_OCULTAR_FORMULARIO, IMAGENES_TRAER_TODAS } from "../../types";
+import { IMAGENES_AGREGAR, IMAGENES_ELIMINAR, IMAGENES_ERROR, IMAGENES_LOADING, IMAGENES_MODIFICAR, IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_HEADER, IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_VARIAS, IMAGENES_TRAER_TODAS } from "../../types";
 
 const imagenesReducer = (state,action)=>{
     switch (action.type) {
@@ -8,8 +8,10 @@ const imagenesReducer = (state,action)=>{
             return {...state,loading:false,error:action.payload}
         case IMAGENES_TRAER_TODAS:
             return {...state,data:action.payload,loading:false,error:null}
-        case IMAGENES_MOSTRAR_OCULTAR_FORMULARIO    :
-            return {...state,mostrarFormulario:!state.mostrarFormulario}
+        case IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_HEADER:
+            return {...state,mostrarFormularioHeader:!state.mostrarFormularioHeader}
+        case IMAGENES_MOSTRAR_OCULTAR_FORMULARIO_VARIAS:
+            return {...state,mostrarFormularioVarias:!state.mostrarFormularioVarias}
         case IMAGENES_AGREGAR:
         case IMAGENES_MODIFICAR:
         case IMAGENES_ELIMINAR:

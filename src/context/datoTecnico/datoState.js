@@ -16,16 +16,11 @@ const DatoTecnicoState = (props)=>{
 
     const [state, dispatch] = useReducer(datosTecnicosReducer, INITIAL_STATE);
 
-    const traerInfo = async()=>{
-        dispatch({
-            type:DATOS_TECNICOS_LOADING
-        })
+    const traerInfo = data=>{
         try {
-            const reqDato = await clienteAxios.get('/datos-tecnicos');
-            const {data:{datos}} = reqDato;
             dispatch({
                 type:DATOS_TECNICOS_TRAER_INFO,
-                payload:datos[0]
+                payload:data
             })
         } catch (error) {
             dispatch({
@@ -35,7 +30,7 @@ const DatoTecnicoState = (props)=>{
         }
     }
 
-    const modificar = async (data,id)=>{
+    const modificar = async (data)=>{
         dispatch({
             type:DATOS_TECNICOS_LOADING
         })
@@ -43,7 +38,7 @@ const DatoTecnicoState = (props)=>{
             if(localStorage.getItem('token')){
                 tokenAuth(localStorage.getItem('token'));
             }
-            await clienteAxios.put(`/datos-tecnicos/${id}`,data);
+            await clienteAxios.put(`/datos-tecnicos`,data);
             dispatch({
                 type:DATOS_TECNICOS_MODIFICAR
             })

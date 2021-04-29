@@ -1,18 +1,56 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import Loader from '../Loader/Loader';
 import { ServiciosContext } from "../../context/servicios/serviciosContext";
+import { PropiedadContext } from "../../context/propiedades/propiedadesContext";
 
-const FormServicio = () => {
+const FormServicio = (props) => {
 
     const [formValues, setFormValues] = useState({
-        luz:'si',
-        agua:'pozo',
-        calefaccion:'si',
-        telefono:'si',
-        gas:'envasado',
-        internet:'si'
-    })
-    const {switchForm} = useContext(ServiciosContext);
+        luz:'',
+        agua:'',
+        calefaccion:'',
+        telefono:'',
+        gas:'',
+        internet:'',
+        idCasa:null
+    });
+    const [errorForm, setErrorForm] = useState(false);
+    const {data,error,traerInfo,switchForm,agregar,modificar} = useContext(ServiciosContext);
+    const {propiedad,idCasa} = useContext(PropiedadContext);
+
+    useEffect(() => {
+        if(propiedad){
+            traerInfo({
+                agua:propiedad.agua,
+                calefaccion:propiedad.calefaccion,
+                gas:propiedad.gas,
+                idCasa:propiedad.idCasa,
+                internet:propiedad.internet,
+                luz:propiedad.luz,
+                telefono:propiedad.telefono,
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        if(data){
+            setFormValues({
+                luz:`${data.luz}`,
+                agua:`${data.agua}`,
+                calefaccion:`${data.calefaccion}`,
+                telefono:`${data.telefono}`,
+                gas:`${data.gas}`,
+                internet:`${data.internet}`,
+                idCasa:`${data.idCasa}`
+            })
+        }else{
+            setFormValues({
+                ...formValues,
+                idCasa
+            })
+        }
+    }, [data])
 
     const handleChange = e=>{
         setFormValues({
@@ -21,12 +59,34 @@ const FormServicio = () => {
         })
     }
 
-    const handleSubmit = e=>{
+    const handleSubmit = async e=>{
         e.preventDefault();
+        console.log(formValues);
+        const erroresDeForm = validarErrores();
+        if(erroresDeForm){
+            setErrorForm(`Te falta completar el campo ${erroresDeForm}`);
+            return;
+        };
+        if(props.id){
+            await modificar(formValues);
+        }else{
+            await agregar(formValues);
+        }
         Swal.fire('Listo','Servicios agregados','success').then(()=>switchForm());
     }
 
+    const validarErrores = ()=>{
+        for (const key in formValues) {
+            if(formValues[key] == '') return key;
+        }
+    }
+
+    if(errorForm || error){
+        let err = error ? error : errorForm;
+        Swal.fire('Atención',err,'error').then(()=>setErrorForm(false));
+    }
     return (
+        false && !formValues.idCasa || (props.id && !formValues.idCasa) ? null :
         <form className="form-group" id="form-servicio" onSubmit={handleSubmit}>
             <h6>Servicios</h6>
             <div className="row text-center">
@@ -35,6 +95,7 @@ const FormServicio = () => {
                     <div className="input-group-text">Electricidad</div>
                     </div>
                     <select className="form-control" name="luz" defaultValue={formValues.luz} onChange={handleChange}>
+                        <option value="">Seleccione una opción</option>
                         <option value="no">No</option>
                         <option value="si">Si</option>
                     </select>
@@ -44,6 +105,7 @@ const FormServicio = () => {
                     <div className="input-group-text">Agua</div>
                     </div>
                     <select className="form-control" defaultValue={formValues.agua} onChange={handleChange} name="agua">
+                        <option value="">Seleccione una opción</option>
                         <option value="corriente">Corriente</option>
                         <option value="pozo">Pozo</option>
                     </select>
@@ -53,6 +115,7 @@ const FormServicio = () => {
                     <div className="input-group-text">Calefacción</div>
                     </div>
                     <select className="form-control" defaultValue={formValues.calefaccion} name="calefaccion" onChange={handleChange}>
+                        <option value="">Seleccione una opción</option>
                         <option value="no">No</option>
                         <option value="si">Si</option>
                     </select>
@@ -64,6 +127,7 @@ const FormServicio = () => {
                         <div className="input-group-text">Telefono</div>
                         </div>
                         <select className="form-control" defaultValue={formValues.telefono} name="telefono" onChange={handleChange}>
+                            <option value="">Seleccione una opción</option>
                             <option value="no">No</option>
                             <option value="si">Si</option>
                         </select>
@@ -73,6 +137,7 @@ const FormServicio = () => {
                         <div className="input-group-text">Gas</div>
                         </div>
                         <select className="form-control" defaultValue={formValues.gas} name="gas" onChange={handleChange}>
+                            <option value="">Seleccione una opción</option>
                             <option value="envasado">Envasado</option>
                             <option value="natural">Natural</option>
                         </select>
@@ -82,6 +147,7 @@ const FormServicio = () => {
                         <div className="input-group-text">Internet</div>
                         </div>
                         <select className="form-control" defaultValue={formValues.internet} name="internet" onChange={handleChange}>
+                            <option value="">Seleccione una opción</option>
                             <option value="no">No</option>
                             <option value="si">Si</option>
                         </select>

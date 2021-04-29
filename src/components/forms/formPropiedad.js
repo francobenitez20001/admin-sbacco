@@ -7,6 +7,7 @@ import { OperacionesContext } from '../../context/operaciones/operacionesContext
 import { PartidosContext } from '../../context/partidos/partidosContext';
 import { LocalidadesContext } from '../../context/localidades/localidadesContext';
 import { BarriosContext } from "../../context/barrios/barriosContext";
+import { DatoTecnicoContext } from "../../context/datoTecnico/datoContext";
 import Loader from '../Loader/Loader';
 import Swal from 'sweetalert2';
 
@@ -33,11 +34,32 @@ const FormPropiedad = (props) => {
     const {data:partidos,traerTodos:traerPartidos} = useContext(PartidosContext);
     const {data:localidades,filtradas:localidadesFiltradas,traerTodas:traerLocalidades,filtrarPorIdPartido:filtrarLocalidades} = useContext(LocalidadesContext);
     const {data:barrios,filtrados:barriosFiltrados,traerTodos:traerBarrios,filtrarPorIdLocalidad:filtrarBarrios} = useContext(BarriosContext);
-    const {switchForm} = useContext(PropiedadContext)
+    const {propiedad,error,switchForm,traerUna,agregar,modificar} = useContext(PropiedadContext);
 
     useEffect(() => {
         getResources();
     }, [])
+
+    useEffect(() => {
+        if(propiedad){
+            filtrarBarrios(propiedad.idLocalidad);
+            setFormValues({
+                idCategoria:`${propiedad.idCategoria}`,
+                idOperacion:`${propiedad.idOperacion}`,
+                idPartido:`${propiedad.idPartido}`,
+                idLocalidad:`${propiedad.idLocalidad}`,
+                idBarrio:`${propiedad.idBarrio}`,
+                direccion:`${propiedad.direccion}`,
+                descripcion:`${propiedad.descripcion}`,
+                precio:propiedad.precio,
+                estado:`${propiedad.estado}`,
+                mostrarEstado:`${propiedad.mostrarEstado}`,
+                moneda:`${propiedad.moneda}`,
+                lat:`${propiedad.lat}`,
+                lon:`${propiedad.lon}` 
+            });
+        }
+    }, [propiedad])
     
     const getResources = async()=>{
         if(!categorias.length){
@@ -54,6 +76,9 @@ const FormPropiedad = (props) => {
         }
         if(!barrios.length){
             await traerBarrios();
+        }
+        if(props.id && !propiedad){
+            await traerUna(props.id);
         }
     }
 
@@ -88,13 +113,18 @@ const FormPropiedad = (props) => {
         });
     };
 
-    const handleSubmit = e=>{
+    const handleSubmit = async e=>{
         e.preventDefault();
         const erroresDeForm = validarErrores();
         if(erroresDeForm){
             setErrorForm(`Te falta completar el campo ${erroresDeForm}`);
             return;
         };
+        if(props.id){
+            await modificar(formValues,props.id);
+        }else{
+            await agregar(formValues);
+        }
         Swal.fire('Listo','Se han agregado los datos de la propiedad','success').then(()=>switchForm());
     }
 
@@ -104,12 +134,12 @@ const FormPropiedad = (props) => {
         }
     }
 
-    if(errorForm){
-        Swal.fire('Atención',errorForm,'warning').then(()=>setErrorForm(false));
+    if(errorForm || error){
+        let err = error ? error : errorForm;
+        Swal.fire('Atención',err,'error').then(()=>setErrorForm(false));
     }
-
     return(
-        !categorias.length || !operaciones.length || !partidos.length || !localidades.length || !barrios.length ? <Loader/> :
+        !categorias.length || !operaciones.length || !partidos.length || !localidades.length || !barrios.length || (props.id && formValues.idCategoria=='')  ? <Loader/> :
         <form className="form-group" id="form-principal" onSubmit={handleSubmit}>
             <h6>Datos principales:</h6>
             <div className="row">
@@ -156,7 +186,7 @@ const FormPropiedad = (props) => {
                 <div className="col-12 col-md-4">
                     <br/>
                     Barrio
-                    <select name="idBarrio" className="form-control" onChange={handleChange}>
+                    <select name="idBarrio" className="form-control" onChange={handleChange} defaultValue={formValues.idBarrio}>
                         <option value="">Selecciona barrio</option>
                         {barriosFiltrados.map(barrio=>(
                             <option key={barrio.idBarrio} value={barrio.idBarrio}>{barrio.barrio}</option>
@@ -205,7 +235,7 @@ const FormPropiedad = (props) => {
                     {/* <input type="text" name="direccion" placeholder="Dirección" className="form-control" onChange={props.handleChangePrincipal} required/> */}
                 </div>
             </div>
-            <textarea name="descripcion" className="form-control mt-3" placeholder="Describa la propiedad" cols="30" rows="10" onChange={handleChange} defaultValue={formValues.description}></textarea>
+            <textarea name="descripcion" className="form-control mt-3" placeholder="Describa la propiedad" cols="30" rows="10" onChange={handleChange} defaultValue={formValues.descripcion}></textarea>
             <div className="row">
                 <div className="col-12 col-md-6">
                     <br/>

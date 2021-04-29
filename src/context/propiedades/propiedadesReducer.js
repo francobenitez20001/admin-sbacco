@@ -7,7 +7,7 @@ const propiedadesReducer = (state,action)=>{
         case PROPIEDAD_ERROR:
             return {...state,loading:false,error:action.payload}
         case PROPIEDAD_TRAER_TODAS:
-            return {...state,loading:false,error:null,data:action.payload,propiedad:null,desde:0}
+            return {...state,loading:false,error:null,data:action.payload,propiedad:null,desde:0,mostrarFormulario:true,propiedad:null}
         case PROPIEDAD_TRAER_MAS:
             return {...state,loading:false,error:null,data:[...state.data,...action.payload],propiedad:null}
         case PROPIEDAD_TRAER_UNO:
@@ -15,6 +15,7 @@ const propiedadesReducer = (state,action)=>{
         case PROPIEDAD_UPDATE_PAGINACION:
             return {...state,desde:action.payload}
         case PROPIEDAD_AGREGAR:
+            return {...state,loading:false,error:null,idCasa:action.payload}
         case PROPIEDAD_MODIFICAR:
         case PROPIEDAD_ELIMINAR:
         case PROPIEDAD_CAMBIAR_ESTADO:

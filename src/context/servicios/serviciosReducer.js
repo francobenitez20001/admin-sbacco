@@ -10,7 +10,7 @@ const serviciosReducer = (state,action)=>{
             return {...state,data:action.payload,loading:false,error:null}
         case SERVICIOS_AGREGAR:
         case SERVICIOS_MODIFICAR:
-            return {...state,loading:false,error:null}
+            return {...state,loading:false,error:null,data:null}
         case SERVICIOS_MOSTRAR_OCULTAR_FORMULARIO:
             return {...state,mostrarFormulario:!state.mostrarFormulario}
         default:

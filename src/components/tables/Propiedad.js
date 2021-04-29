@@ -1,14 +1,16 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import {PropiedadContext} from '../../context/propiedades/propiedadesContext';
 import withReactContent from 'sweetalert2-react-content';
 import Loader from '../Loader/Loader';
+import Spinner from '../Loader/Spinner';
 const Swal = require('sweetalert2');
 const MySwal = withReactContent(Swal);
 
 const TablaProductos = () => {
 
     const {data,loading,error,desde,eliminar,traerTodas,traerMas,cambiarEstado} = useContext(PropiedadContext);
+    const [imagenCargada, setImagenCargada] = useState(false);
 
     useEffect(() => {
         traerTodas();
@@ -55,12 +57,18 @@ const TablaProductos = () => {
         })
     }
 
+    const handleLoad = e=>{
+        let element = e.target;
+        setImagenCargada(true);
+        element.style.display = 'block';
+    }
+
     if(error){
         Swal.fire('Error',error,'error');
     }
 
     return (
-        loading ? <Loader/> :
+        loading ? null :
         <>
             <h3 className="my-4 ml-2">Tabla de administración de propiedades</h3>
             <table className="table text-center">
@@ -81,7 +89,10 @@ const TablaProductos = () => {
                     {
                     data.map(propiedad=>(
                         <tr key={propiedad.id} style={{border:`solid 2px ${(propiedad.activo)?`green`:`yellow`}`}}>
-                            <th><img style={{width:'30px',maxHeight:'30px',cursor:'pointer'}} src={propiedad.header} alt={propiedad.localidad}/></th>
+                            <th>
+                                <img style={{width:'30px',maxHeight:'30px',cursor:'pointer',display:'none'}} src={propiedad.header} alt={propiedad.localidad} onLoad={handleLoad}/>
+                                {imagenCargada?null:<Spinner/>}
+                            </th>
                             <th>{propiedad.barrio}</th>
                             <td>{propiedad.categoria}</td>
                             <td>{propiedad.operacion}</td>

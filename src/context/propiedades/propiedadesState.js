@@ -13,7 +13,8 @@ const PropiedadesState = (props) => {
         error:null,
         desde:0,
         cantidad:10,
-        mostrarFormulario:true
+        mostrarFormulario:true,
+        idCasa:null
     };
 
     const [state, dispatch] = useReducer(propiedadesReducer, INITIAL_STATE);   
@@ -63,7 +64,7 @@ const PropiedadesState = (props) => {
             const {data:{inmueble}} = reqPropiedades;
             dispatch({
                 type:PROPIEDAD_TRAER_UNO,
-                payload:inmueble
+                payload:inmueble[0]
             })
         } catch (error) {
             dispatch({
@@ -110,8 +111,9 @@ const PropiedadesState = (props) => {
             if(localStorage.getItem('token')){
                 tokenAuth(localStorage.getItem('token'));
             }
-            await clienteAxios.post('/inmuebles',data);
-            dispatch({type:PROPIEDAD_AGREGAR});
+            const agregarPropiedad = await clienteAxios.post('/inmuebles',data);
+            const {data:{info}} = agregarPropiedad;
+            dispatch({type:PROPIEDAD_AGREGAR,payload:info[0].id});
             return;
         } catch (error) {
             dispatch({
@@ -176,6 +178,7 @@ const PropiedadesState = (props) => {
                 desde:state.desde,
                 cantidad:state.cantidad,
                 mostrarFormulario:state.mostrarFormulario,
+                idCasa:state.idCasa,
                 traerTodas,
                 traerMas,
                 traerUna,

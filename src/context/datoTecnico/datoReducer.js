@@ -10,7 +10,7 @@ const datosTecnicosReducer = (state,action)=>{
             return {...state,data:action.payload,loading:false,error:null}
         case DATOS_TECNICOS_AGREGAR:
         case DATOS_TECNICOS_MODIFICAR:
-            return {...state,loading:false,error:null}
+            return {...state,loading:false,error:null,data:null}
         case DATOS_TECNICOS_MOSTRAR_OCULTAR_FORMULARIO:
             return {...state,mostrarFormulario:!state.mostrarFormulario}
         default:

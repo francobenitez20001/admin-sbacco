@@ -8,7 +8,7 @@ import { SERVICIOS_AGREGAR, SERVICIOS_ERROR, SERVICIOS_LOADING, SERVICIOS_MODIFI
 const ServiciosState = (props)=>{
 
     const INITIAL_STATE = {
-        data:[],
+        data:null,
         loading:false,
         error:null,
         mostrarFormulario:false
@@ -16,16 +16,14 @@ const ServiciosState = (props)=>{
 
     const [state, dispatch] = useReducer(serviciosReducer, INITIAL_STATE);
 
-    const traerInfo = async()=>{
+    const traerInfo = data=>{
         dispatch({
             type:SERVICIOS_LOADING
         })
         try {
-            const reqCategorias = await clienteAxios.get('/servicios');
-            const {data:{categorias}} = reqCategorias;
             dispatch({
                 type:SERVICIOS_TRAER_INFO,
-                payload:categorias
+                payload:data
             })
         } catch (error) {
             dispatch({
@@ -35,7 +33,7 @@ const ServiciosState = (props)=>{
         }
     }
 
-    const modificar = async (data,id)=>{
+    const modificar = async (data)=>{
         dispatch({
             type:SERVICIOS_LOADING
         })
@@ -43,7 +41,7 @@ const ServiciosState = (props)=>{
             if(localStorage.getItem('token')){
                 tokenAuth(localStorage.getItem('token'));
             }
-            await clienteAxios.put(`/servicios/${id}`,data);
+            await clienteAxios.put(`/servicios`,data);
             dispatch({
                 type:SERVICIOS_MODIFICAR
             })
