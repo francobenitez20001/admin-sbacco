@@ -11,6 +11,7 @@ const FormEditContacto = (props) => {
         whatsapp:'',
         facebook:'',
         instagram:'',
+        twitter:'',
         direccion:''
     });
     const [errorForm, setErrorForm] = useState(false);
@@ -24,6 +25,7 @@ const FormEditContacto = (props) => {
                 whatsapp:info.whatsapp,
                 facebook:info.facebook,
                 instagram:info.instagram,
+                twitter:`${info.twitter}`,
                 direccion:info.direccion
             });
         }
@@ -101,6 +103,14 @@ const FormEditContacto = (props) => {
                             </div>
                         </div>
                         <input type="text" name="instagram" onChange={handleChange} value={formValues.instagram} className="form-control"/>
+                    </div>
+                    <div className="my-4 col-12 input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Twitter
+                            </div>
+                        </div>
+                        <input type="text" name="twitter" onChange={handleChange} value={formValues.twitter} className="form-control"/>
                     </div>
                     <div className="my-4 col-12 input-group">
                         <div className="input-group-prepend">

@@ -27,6 +27,7 @@ const TablaContacto = () => {
                     <th scope="col">Whatsapp</th>
                     <th scope="col">Facebook</th>
                     <th scope="col">Instagram</th>
+                    <th scope="col">Twitter</th>
                     <th scope="col">Dirección</th>
                     <th scope="col" className="text-center">
                         <Link to={{pathname:`/contacto/edit/1`}} className="btn btn-outline-info">Modificar</Link>
@@ -40,6 +41,7 @@ const TablaContacto = () => {
                             <td>{item.whatsapp}</td>
                             <td>{item.facebook.substr(0,27)}...</td>
                             <td>{item.instagram.substr(0,27)}...</td>
+                            <td>{item.twitter}...</td>
                             <td>{item.direccion.substr(0,27)}...</td>
                         </tr>
                     ))}
