@@ -14,7 +14,8 @@ const FormDatoTecnico = (props) => {
         cochera:'Si',
         dormitorios:'',
         u_medida:'metros cuadrados',
-        idCasa:null
+        idCasa:null,
+        baños:'0'
     });
     const [errorForm, setErrorForm] = useState(false);
     const {data,error,traerInfo,switchForm,agregar,modificar} = useContext(DatoTecnicoContext);
@@ -31,7 +32,8 @@ const FormDatoTecnico = (props) => {
                 s_semicubierta:propiedad.s_semicubierta,
                 s_terreno:propiedad.s_terreno,
                 s_total:propiedad.s_total || '0',
-                u_medida:propiedad.u_medida
+                u_medida:propiedad.u_medida,
+                baños:propiedad.baños
             })
         }
     }, []);
@@ -47,7 +49,8 @@ const FormDatoTecnico = (props) => {
                 cochera:`${data.cochera}`,
                 dormitorios:`${data.dormitorios}`,
                 u_medida:`${data.u_medida}`,
-                idCasa:`${data.idCasa}`
+                idCasa:`${data.idCasa}`,
+                baños:`${data.baños}`
             })
         }else{
             setFormValues({
@@ -90,7 +93,8 @@ const FormDatoTecnico = (props) => {
                 s_cubierta:"-",
                 s_semicubierta:"-",
                 s_terreno:"-",
-                s_total:"0"
+                s_total:"0",
+                baños:'0'
             });
             handleSubmit(e);
         }else{
@@ -114,7 +118,7 @@ const FormDatoTecnico = (props) => {
         <form className="form-group" id="form-tecnico" onSubmit={handleSubmit}>
             <h6>Datos técnicos</h6>
             <div className="row">
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-3">
                     <div className="input-group mt-3 mb-2">
                         <div className="input-group-prepend">
                             <div className="input-group-text">Superf. Cubierta</div>
@@ -122,7 +126,7 @@ const FormDatoTecnico = (props) => {
                         <input type="text" name="s_cubierta" value={formValues.s_cubierta} onChange={handleChange} placeholder="Superficie cubierta en m2" className="form-control"/>
                     </div>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-3">
                     <div className="input-group mt-3">
                         <div className="input-group-prepend">
                             <div className="input-group-text">Super. Semicubierta</div>
@@ -130,7 +134,7 @@ const FormDatoTecnico = (props) => {
                         <input type="text" onChange={handleChange} value={formValues.s_semicubierta} name="s_semicubierta" placeholder="Superficie semicubierta en m2" className="form-control"/>
                     </div>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-3">
                     <div className="input-group mt-3 mb-2">
                         <div className="input-group-prepend">
                             <div className="input-group-text">Super. Terreno</div>
@@ -138,7 +142,7 @@ const FormDatoTecnico = (props) => {
                         <input type="text" onChange={handleChange} value={formValues.s_terreno} name="s_terreno" placeholder="Superficie del terreno" className="form-control"/>
                     </div>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-3">
                     <div className="input-group mt-3 mb-2">
                         <div className="input-group-text">Sup. Total</div>
                         <input type="text" className="form-control" name="s_total" onChange={handleChange} value={formValues.s_total}/>
@@ -150,7 +154,7 @@ const FormDatoTecnico = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-md-2">
+                <div className="col-12 col-md-3">
                     <div className="input-group mt-3 mb-2">
                         <div className="input-group-prepend">
                             <div className="input-group-text">Pileta</div>
@@ -162,7 +166,7 @@ const FormDatoTecnico = (props) => {
                         </select>
                     </div>
                 </div>
-                <div className="col-12 col-md-2">
+                <div className="col-12 col-md-3">
                     <div className="input-group mt-3 mb-2">
                         <div className="input-group-prepend">
                             <div className="input-group-text">Cochera</div>
@@ -174,7 +178,7 @@ const FormDatoTecnico = (props) => {
                         </select>
                     </div>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-3">
                     <input type="hidden" name="idCasa"/>
                     <input type="hidden" name="pass"/>
                     <div className="input-group mt-3">
@@ -182,6 +186,14 @@ const FormDatoTecnico = (props) => {
                             <div className="input-group-text">Dormitorios</div>
                         </div>
                         <input type="text" name="dormitorios" onChange={handleChange} value={formValues.dormitorios} placeholder="Ingrese cantidad de dormitorios" className="form-control"/>
+                    </div>
+                </div>
+                <div className="col-12 col-md-3">
+                    <div className="input-group mt-3">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">Baños</div>
+                        </div>
+                        <input type="text" name="baños" onChange={handleChange} value={formValues.baños} placeholder="Ingrese cantidad de baños" className="form-control"/>
                     </div>
                 </div>
             </div>
