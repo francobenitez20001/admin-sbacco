@@ -3,7 +3,7 @@ import propiedadesReducer from './propiedadesReducer';
 import {PropiedadContext} from './propiedadesContext';
 import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/token';
-import { PROPIEDAD_AGREGAR, PROPIEDAD_ELIMINAR, PROPIEDAD_ERROR, PROPIEDAD_LOADING, PROPIEDAD_MODIFICAR, PROPIEDAD_TRAER_MAS, PROPIEDAD_TRAER_TODAS, PROPIEDAD_TRAER_UNO, PROPIEDAD_UPDATE_PAGINACION, PROPIEDAD_CAMBIAR_ESTADO, PROPIEDAD_MOSTRAR_OCULTAR_FORMULARIO } from "../../types/index";
+import { PROPIEDAD_AGREGAR, PROPIEDAD_ELIMINAR, PROPIEDAD_ERROR, PROPIEDAD_LOADING, PROPIEDAD_MODIFICAR, PROPIEDAD_TRAER_MAS, PROPIEDAD_TRAER_TODAS, PROPIEDAD_TRAER_UNO, PROPIEDAD_UPDATE_PAGINACION, PROPIEDAD_CAMBIAR_ESTADO, PROPIEDAD_MOSTRAR_OCULTAR_FORMULARIO, PROPIEDAD_APLICAR_FILTRO, PROPIEDAD_RESTABLECER_FILTRO } from "../../types/index";
 
 const PropiedadesState = (props) => {
     const INITIAL_STATE = {
@@ -14,7 +14,16 @@ const PropiedadesState = (props) => {
         desde:0,
         cantidad:9,
         mostrarFormulario:true,
-        idCasa:null
+        idCasa:null,
+        filtros:{
+            idCategoria:null,
+            idLocalidad:null,
+            idBarrio:null,
+            minPrecio:null,
+            maxPrecio:null,
+            moneda:null
+        },
+        filtrando:false
     };
 
     const [state, dispatch] = useReducer(propiedadesReducer, INITIAL_STATE);   
@@ -28,6 +37,49 @@ const PropiedadesState = (props) => {
                 tokenAuth(localStorage.getItem('token'));
             }
             let url = `/inmuebles?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
+            const reqPropiedades = await clienteAxios.get(url);
+            const {data:{inmuebles}} = reqPropiedades;
+            dispatch({
+                type:PROPIEDAD_TRAER_TODAS,
+                payload:inmuebles
+            })
+        } catch (error) {
+            dispatch({
+                type:PROPIEDAD_ERROR,
+                payload:error.response.data
+            })
+        }
+    }
+
+    const filtrarPropiedades = async()=>{
+        dispatch({
+            type:PROPIEDAD_LOADING
+        })
+        try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
+            let url = `/inmuebles/operaciones/filtrar?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
+            const {idCategoria,idLocalidad,idBarrio,minPrecio,maxPrecio,moneda} = state.filtros;
+            
+            if(idCategoria){
+                url += `&idCategoria=${idCategoria}`;
+            }
+            if(idLocalidad){
+                url += `&idLocalidad=${idLocalidad}`;
+            }
+            if(idBarrio){
+                url += `&idBarrio=${idBarrio}`;
+            }
+            if(minPrecio){
+                url += `&minPrecio=${minPrecio}`;
+            }
+            if(maxPrecio){
+                url += `&maxPrecio=${maxPrecio}`;
+            }
+            if(moneda){
+                url += `&moneda=${moneda}`;
+            }
             const reqPropiedades = await clienteAxios.get(url);
             const {data:{inmuebles}} = reqPropiedades;
             dispatch({
@@ -170,6 +222,20 @@ const PropiedadesState = (props) => {
         })
     }
 
+    const aplicarFiltro = data =>{
+        dispatch({
+            type:PROPIEDAD_APLICAR_FILTRO,
+            payload:data
+        })
+    }
+
+    const restablecerFiltros = () => {
+        dispatch({
+            type:PROPIEDAD_RESTABLECER_FILTRO
+        });
+        traerTodas();
+    }
+
 
     return (
         <PropiedadContext.Provider
@@ -182,6 +248,8 @@ const PropiedadesState = (props) => {
                 cantidad:state.cantidad,
                 mostrarFormulario:state.mostrarFormulario,
                 idCasa:state.idCasa,
+                filtros:state.filtros,
+                filtrando:state.filtrando,
                 traerTodas,
                 traerMas,
                 traerUna,
@@ -190,7 +258,10 @@ const PropiedadesState = (props) => {
                 agregar,
                 eliminar,
                 cambiarEstado,
-                switchForm
+                switchForm,
+                filtrarPropiedades,
+                aplicarFiltro,
+                restablecerFiltros
             }}>
             {props.children}
         </PropiedadContext.Provider>

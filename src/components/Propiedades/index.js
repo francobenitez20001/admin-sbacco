@@ -4,10 +4,14 @@ import { PropiedadContext } from "../../context/propiedades/propiedadesContext";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
+import FormFiltroPropiedades from '../FormFiltro';
+import './index.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 const MySwal = withReactContent(Swal);
 
 const Propiedades = () => {
-    const {data,desde,loading,error,traerTodas,traerMas,eliminar,cambiarEstado} = useContext(PropiedadContext);
+    const {data,desde,filtrando,loading,error,traerTodas,traerMas,eliminar,cambiarEstado,filtrarPropiedades,restablecerFiltros} = useContext(PropiedadContext);
 
     useEffect(() => {
         traerTodas()
@@ -18,6 +22,12 @@ const Propiedades = () => {
             traerMas();
         }
     }, [desde])
+
+    useEffect(() => {
+        if(filtrando){
+            filtrarPropiedades();
+        }
+    }, [filtrando])
 
     if(error){
         Swal.fire(
@@ -64,11 +74,19 @@ const Propiedades = () => {
 
     return (
         <>
-            <h1 className="my-2 col-12 col-md-6">Tus propiedades</h1>
+            <h1 className="my-2 col-12 col-md-6" style={{fontSize:'30px'}}>Tus propiedades</h1>
             <div className="col-12 col-md-6 text-right pt-2">
                 <Link to="/propiedad/add" className="btn btn-info">
                     Nueva Propiedad
                 </Link>
+            </div>
+            <div className="col-12 mt-2 mb-3">
+                <FormFiltroPropiedades/>
+            </div>
+            <div className="col-12 mb-2">
+                {filtrando ? <span id="btn-restablecerFiltros" onClick={()=>restablecerFiltros()}>
+                    Restablecer filtros <FontAwesomeIcon icon={faTimes}/>
+                </span> : null}
             </div>
             <hr/>
             {data.map(inmueble=>(
