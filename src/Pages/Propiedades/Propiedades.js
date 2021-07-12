@@ -1,10 +1,10 @@
 import React,{useContext, useEffect} from 'react';
-import TablaProductos from '../../components/tables/Propiedad';
 import {PropiedadContext} from '../../context/propiedades/propiedadesContext';
 import { DatoTecnicoContext } from "../../context/datoTecnico/datoContext";
 import { ServiciosContext } from "../../context/servicios/serviciosContext";
 import { ImagenesContext } from "../../context/imagenes/imagenesContext";
 import Spinner from '../../components/Loader/Spinner';
+import Propiedades from '../../components/Propiedades';
 
 const Productos = () => {
 
@@ -30,8 +30,12 @@ const Productos = () => {
 
     return (
         <>
-            <TablaProductos/>
-            <div className="col-12 text-center my-2"><button onClick={()=>updatePaginacion()} className="btn btn-info">{loading ? <Spinner/> : 'Ver Mas'}</button></div>
+            <div className="container">
+                <div className="row">
+                    <Propiedades/>
+                </div>
+                <div className="col-12 text-center my-2"><button onClick={()=>updatePaginacion()} className="btn btn-info">{loading ? <Spinner/> : 'Ver Mas'}</button></div>
+            </div>
         </>
     );
 }

@@ -12,7 +12,7 @@ const PropiedadesState = (props) => {
         loading:false,
         error:null,
         desde:0,
-        cantidad:10,
+        cantidad:9,
         mostrarFormulario:true,
         idCasa:null
     };
@@ -24,6 +24,9 @@ const PropiedadesState = (props) => {
             type:PROPIEDAD_LOADING
         })
         try {
+            if(localStorage.getItem('token')){
+                tokenAuth(localStorage.getItem('token'));
+            }
             let url = `/inmuebles?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
             const reqPropiedades = await clienteAxios.get(url);
             const {data:{inmuebles}} = reqPropiedades;
