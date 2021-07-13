@@ -60,27 +60,9 @@ const PropiedadesState = (props) => {
                 tokenAuth(localStorage.getItem('token'));
             }
             let url = `/inmuebles/operaciones/filtrar?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
-            const {idCategoria,idLocalidad,idBarrio,minPrecio,maxPrecio,moneda} = state.filtros;
-            
-            if(idCategoria){
-                url += `&idCategoria=${idCategoria}`;
-            }
-            if(idLocalidad){
-                url += `&idLocalidad=${idLocalidad}`;
-            }
-            if(idBarrio){
-                url += `&idBarrio=${idBarrio}`;
-            }
-            if(minPrecio){
-                url += `&minPrecio=${minPrecio}`;
-            }
-            if(maxPrecio){
-                url += `&maxPrecio=${maxPrecio}`;
-            }
-            if(moneda){
-                url += `&moneda=${moneda}`;
-            }
-            const reqPropiedades = await clienteAxios.get(url);
+            const reqPropiedades = await clienteAxios.post(url,{
+                filtros:state.filtros
+            });
             const {data:{inmuebles}} = reqPropiedades;
             dispatch({
                 type:PROPIEDAD_TRAER_TODAS,
@@ -97,8 +79,17 @@ const PropiedadesState = (props) => {
     const traerMas = async ()=>{
         dispatch({type:PROPIEDAD_LOADING});
         try {
-            let url = `/inmuebles?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
-            const reqPropiedades = await clienteAxios.get(url);
+            let url;
+            let reqPropiedades;
+            if(!state.filtrando){
+                url = `/inmuebles?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
+                reqPropiedades = await clienteAxios.get(url);
+            }else{
+                url = `/inmuebles/operaciones/filtrar?desde=${state.desde}&cantidad=${state.cantidad}&order=normal`;
+                reqPropiedades = await clienteAxios.post(url,{
+                    filtros:state.filtros
+                });
+            }
             const {data:{inmuebles}} = reqPropiedades;
             dispatch({
                 type:PROPIEDAD_TRAER_MAS,
@@ -233,7 +224,6 @@ const PropiedadesState = (props) => {
         dispatch({
             type:PROPIEDAD_RESTABLECER_FILTRO
         });
-        traerTodas();
     }
 
 

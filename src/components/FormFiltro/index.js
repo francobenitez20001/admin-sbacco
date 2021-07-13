@@ -4,13 +4,14 @@ import { PartidosContext } from "../../context/partidos/partidosContext";
 import { LocalidadesContext } from "../../context/localidades/localidadesContext";
 import {BarriosContext} from '../../context/barrios/barriosContext';
 import { PropiedadContext } from '../../context/propiedades/propiedadesContext';
+import Spinner from '../Loader/Spinner';
 
 const FormFiltroPropiedades = () => {
 
     const {data:categorias,traerTodas:traerCategorias} = useContext(CategoriasContext);
     const {data:partidos,traerTodos:traerPartidos} = useContext(PartidosContext);
-    const {data:localidades,traerTodas:traerLocalidades} = useContext(LocalidadesContext);
-    const {data:barrios,traerTodos:traerBarrios} = useContext(BarriosContext);
+    const {data:localidades,filtradas:localidadesFiltradas,traerTodas:traerLocalidades,filtrarPorIdPartido:filtrarLocalidades} = useContext(LocalidadesContext);
+    const {data:barrios,filtrados:barriosFiltrados,traerTodos:traerBarrios,filtrarPorIdLocalidad:filtrarBarrios} = useContext(BarriosContext);
     const {aplicarFiltro} = useContext(PropiedadContext);
 
     const [formValues, setFormValues] = useState({
@@ -29,10 +30,18 @@ const FormFiltroPropiedades = () => {
     }, [])
 
     const getData = async () => {
-        await traerCategorias();
-        await traerPartidos();
-        await traerLocalidades();
-        await traerBarrios();
+        if(!categorias.length){
+            await traerCategorias();
+        }
+        if(!partidos.length){
+            await traerPartidos();
+        }
+        if(!localidades.length){
+            await traerLocalidades();
+        }
+        if(!barrios.length){
+            await traerBarrios();
+        }
         setLoadAll(true);
         return;
     }
@@ -41,18 +50,15 @@ const FormFiltroPropiedades = () => {
     const handleSubmit = e => {
         e.preventDefault();
         aplicarFiltro(formValues);
-        setFormValues({
-            idCategoria:'',
-            idPartido:'',
-            idLocalidad:'',
-            idBarrio:'',
-            minPrecio:'',
-            maxPrecio:'',
-            moneda:'Dolar'
-        })
     }
 
     const handleChange = e => {
+        if(e.target.name === 'idPartido'){
+            filtrarLocalidades(e.target.value);
+        }
+        if(e.target.name === 'idLocalidad'){
+            filtrarBarrios(e.target.value);
+        }
         setFormValues({
             ...formValues,
             [e.target.name]:e.target.value
@@ -60,7 +66,7 @@ const FormFiltroPropiedades = () => {
     }
 
     return (
-        !loadAll ? null :
+        !loadAll ? <Spinner/> :
         <form className="form-group" onSubmit={handleSubmit}>
             <div className="row">
                 <div className="col-12 col-sm-6 col-md-3">
@@ -90,9 +96,13 @@ const FormFiltroPropiedades = () => {
                         <div className="input-group-text" id="localidad">Localidad</div>
                         <select className="form-control" aria-describedby="localidad" defaultValue={formValues.idLocalidad} name="idLocalidad" onChange={handleChange}>
                             <option value="">Selecciona una localidad</option>
-                            {localidades.map(localidad=>(
+                            {!localidadesFiltradas.length ? localidades.map(localidad=>(
                                 <option value={localidad.id} key={localidad.id}>{localidad.localidad}</option>
-                            ))}
+                            )) : 
+                                localidadesFiltradas.map(localidad=>(
+                                    <option value={localidad.id} key={localidad.id}>{localidad.localidad}</option>
+                                ))
+                            }
                         </select>
                     </div>
                 </div>
@@ -101,9 +111,13 @@ const FormFiltroPropiedades = () => {
                         <div className="input-group-text" id="barrio">Barrio</div>
                         <select className="form-control" aria-describedby="barrio" defaultValue={formValues.idBarrio} name="idBarrio" onChange={handleChange}>
                             <option value="">Selecciona un  barrio</option>
-                            {barrios.map(barrio=>(
+                            {!barriosFiltrados.length ? barrios.map(barrio=>(
                                 <option value={barrio.idBarrio} key={barrio.idBarrio}>{barrio.barrio}</option>
-                            ))}
+                            )) : 
+                                barriosFiltrados.map(barrio=>(
+                                    <option value={barrio.idBarrio} key={barrio.idBarrio}>{barrio.barrio}</option>
+                                ))
+                            }
                         </select>
                     </div>
                 </div>

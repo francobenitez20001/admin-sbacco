@@ -1,4 +1,4 @@
-import React, {useEffect,useContext} from 'react';
+import React, {useEffect,useContext, useState} from 'react';
 import Propiedad from '../Propiedad/index'
 import { PropiedadContext } from "../../context/propiedades/propiedadesContext";
 import withReactContent from 'sweetalert2-react-content';
@@ -11,23 +11,23 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 const MySwal = withReactContent(Swal);
 
 const Propiedades = () => {
-    const {data,desde,filtrando,loading,error,traerTodas,traerMas,eliminar,cambiarEstado,filtrarPropiedades,restablecerFiltros} = useContext(PropiedadContext);
+    const {data,desde,filtrando,loading,filtros,error,traerTodas,traerMas,eliminar,cambiarEstado,filtrarPropiedades,restablecerFiltros} = useContext(PropiedadContext);
+    const [showFormFiltrar, setShowFormFiltrar] = useState(false);
 
     useEffect(() => {
-        traerTodas()
-    }, [])
+        if(filtrando){
+            filtrarPropiedades();
+        }else{
+            traerTodas();
+        }
+    }, [filtros])
 
     useEffect(() => {
         if(desde>0){
             traerMas();
         }
     }, [desde])
-
-    useEffect(() => {
-        if(filtrando){
-            filtrarPropiedades();
-        }
-    }, [filtrando])
+    
 
     if(error){
         Swal.fire(
@@ -76,12 +76,15 @@ const Propiedades = () => {
         <>
             <h1 className="my-2 col-12 col-md-6" style={{fontSize:'30px'}}>Tus propiedades</h1>
             <div className="col-12 col-md-6 text-right pt-2">
-                <Link to="/propiedad/add" className="btn btn-info">
+                <button type="button" className="btn btn-info mx-2" onClick={()=>setShowFormFiltrar(!showFormFiltrar)}>
+                    Filtrar
+                </button>
+                <Link to="/propiedad/add" className="btn btn-info mx-2">
                     Nueva Propiedad
                 </Link>
             </div>
             <div className="col-12 mt-2 mb-3">
-                <FormFiltroPropiedades/>
+                {showFormFiltrar ? <FormFiltroPropiedades/> : null }
             </div>
             <div className="col-12 mb-2">
                 {filtrando ? <span id="btn-restablecerFiltros" onClick={()=>restablecerFiltros()}>

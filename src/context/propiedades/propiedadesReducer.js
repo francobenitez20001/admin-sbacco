@@ -25,6 +25,8 @@ const propiedadesReducer = (state,action)=>{
         case PROPIEDAD_APLICAR_FILTRO:
             return {
                 ...state,
+                desde:0,
+                cantidad:9,
                 filtrando:true,
                 filtros:{
                     idCategoria:action.payload.idCategoria !== '' ? action.payload.idCategoria : null,

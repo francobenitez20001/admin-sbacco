@@ -8,7 +8,7 @@ import Propiedades from '../../components/Propiedades';
 
 const Productos = () => {
 
-    const {loading,updatePaginacion} = useContext(PropiedadContext);
+    const {data:inmuebles,cantidad,loading,updatePaginacion} = useContext(PropiedadContext);
     const {mostrarFormulario:mostrarFormDatosTecnicos,switchForm:habilitarDatosTecnicos} = useContext(DatoTecnicoContext);
     const {mostrarFormulario:mostrarFormServicios,switchForm:habilitarServicios} = useContext(ServiciosContext);
     const {mostrarFormularioHeader,mostrarFormularioVarias,habilitarFormHeader,habilitarFormVarias} = useContext(ImagenesContext);
@@ -34,7 +34,7 @@ const Productos = () => {
                 <div className="row">
                     <Propiedades/>
                 </div>
-                <div className="col-12 text-center my-2"><button onClick={()=>updatePaginacion()} className="btn btn-info">{loading ? <Spinner/> : 'Ver Mas'}</button></div>
+                {inmuebles.length < cantidad ? null : <div className="col-12 text-center my-2"><button onClick={()=>updatePaginacion()} className="btn btn-info">{loading ? <Spinner/> : 'Ver Mas'}</button></div>}
             </div>
         </>
     );
