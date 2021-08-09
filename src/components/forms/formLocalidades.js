@@ -88,10 +88,24 @@ const FormLocalidades = (props) => {
             <form className="form-group" onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-12 col-md-6">
-                        {renderSelect()}
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <div className="input-group-text">
+                                    Partido      
+                                </div>
+                            </div>
+                            {renderSelect()}    
+                        </div>
                     </div>
                     <div className="col-12 col-md-6">
-                        <input type="text" className="form-control" value={formValues.localidad} placeholder="Localidad" onChange={handleChange} name="localidad"/>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <div className="input-group-text">
+                                    Localidad        
+                                </div>
+                            </div>
+                            <input type="text" className="form-control" value={formValues.localidad} placeholder="Localidad" onChange={handleChange} name="localidad"/>
+                        </div>
                     </div>
                 </div>
                 <input type="submit" style={{float:"right"}} className="btn btn-info mt-4" value="Enviar"/>

@@ -69,7 +69,14 @@ const FormOperacion = (props) => {
             <h3>Formulario de nueva operación</h3>
             <br/>
             <form className="form-group" onSubmit={handleSubmit}>
-                <input type="text" className="form-control" value={formValues.operacion} placeholder="Operacion" onChange={handleChange} name="operacion"/>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <div className="input-group-text">
+                            Operacion        
+                        </div>
+                    </div>
+                    <input type="text" className="form-control" value={formValues.operacion} placeholder="Operacion" onChange={handleChange} name="operacion"/>
+                </div>
                 <input type="submit" style={{float:"right"}} className="btn btn-info mt-4" value="Agregar"/>
             </form>
         </div>

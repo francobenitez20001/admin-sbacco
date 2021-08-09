@@ -66,7 +66,14 @@ const FormCategoria = (props) => {
             <h3>Formulario de nueva categoria</h3>
             <br/>
             <form className="form-group" onSubmit={handleSubmit}>
-                <input type="text" className="form-control" value={formValues.categoria} placeholder="Categoria" onChange={handleChange} name="categoria"/>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <div className="input-group-text">
+                            Nombre de la categoria
+                        </div>
+                    </div>
+                    <input type="text" className="form-control" value={formValues.categoria} placeholder="Categoria" onChange={handleChange} name="categoria"/>
+                </div>
                 <input type="submit" style={{float:"right"}} className="btn btn-info mt-4" value="Enviar"/>
             </form>
         </div>

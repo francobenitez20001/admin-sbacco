@@ -143,60 +143,84 @@ const FormPropiedad = (props) => {
         <form className="form-group" id="form-principal" onSubmit={handleSubmit}>
             <h6>Datos principales:</h6>
             <div className="row">
-                <div className="col-12 col-md-6">
-                    <br/>
-                    Categoria
-                    <select name="idCategoria" className="form-control" onChange={handleChange} defaultValue={formValues.idCategoria}>
-                        <option value="">Selecciona una categoria</option>
-                        {categorias.map(categoria=>(
-                            <option key={categoria.id} value={categoria.id}>{categoria.categoria}</option>
-                        ))}
-                    </select>
+                <div className="col-12 col-md-6 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Categoria
+                            </div>
+                        </div>
+                        <select name="idCategoria" className="form-control" onChange={handleChange} defaultValue={formValues.idCategoria}>
+                            <option value="">Selecciona una categoria</option>
+                            {categorias.map(categoria=>(
+                                <option key={categoria.id} value={categoria.id}>{categoria.categoria}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <div className="col-12 col-md-6">
-                    <br/>
-                    Tipo de operación
-                    <select name="idOperacion" className="form-control" onChange={handleChange} defaultValue={formValues.idOperacion}>
-                        <option value="">Selecciona el tipo operacion</option>
-                        {operaciones.map(operacion=>(
-                            <option key={operacion.id} value={operacion.id}>{operacion.operacion}</option>
-                        ))}
-                    </select>
+                <div className="col-12 col-md-6 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Tipo de operación
+                            </div>
+                        </div>
+                        <select name="idOperacion" className="form-control" onChange={handleChange} defaultValue={formValues.idOperacion}>
+                            <option value="">Selecciona el tipo operacion</option>
+                            {operaciones.map(operacion=>(
+                                <option key={operacion.id} value={operacion.id}>{operacion.operacion}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <div className="col-12 col-md-4">
-                    <br/>
-                    Partido
-                    <select name="idPartido" className="form-control" onChange={handleChange} defaultValue={formValues.idPartido}>
-                        <option value="">Selecciona un partido</option>
-                        {partidos.map(partido=>(
-                            <option key={partido.id} value={partido.id}>{partido.partido}</option>
-                        ))}
-                    </select>
+                <div className="col-12 col-md-4 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Partido
+                            </div>
+                        </div>
+                        <select name="idPartido" className="form-control" onChange={handleChange} defaultValue={formValues.idPartido}>
+                            <option value="">Selecciona un partido</option>
+                            {partidos.map(partido=>(
+                                <option key={partido.id} value={partido.id}>{partido.partido}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <div className="col-12 col-md-4">
-                    <br/>
-                    Localidades
-                    <select name="idLocalidad" className="form-control" onChange={handleChange} defaultValue={formValues.idLocalidad}>
-                        <option value="">Selecciona localidad</option>
-                        {localidadesFiltradas.map(localidad=>(
-                            <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
-                        ))}
-                    </select>
+                <div className="col-12 col-md-4 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Localidad
+                            </div>
+                        </div>
+                        <select name="idLocalidad" className="form-control" onChange={handleChange} defaultValue={formValues.idLocalidad}>
+                            <option value="">Selecciona localidad</option>
+                            {localidadesFiltradas.map(localidad=>(
+                                <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <div className="col-12 col-md-4">
-                    <br/>
-                    Barrio
-                    <select name="idBarrio" className="form-control" onChange={handleChange} defaultValue={formValues.idBarrio}>
-                        <option value="">Selecciona barrio</option>
-                        {barriosFiltrados.map(barrio=>(
-                            <option key={barrio.idBarrio} value={barrio.idBarrio}>{barrio.barrio}</option>
-                        ))}
-                    </select>
+                <div className="col-12 col-md-4 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Barrio
+                            </div>
+                        </div>
+                        <select name="idBarrio" className="form-control" onChange={handleChange} defaultValue={formValues.idBarrio}>
+                            <option value="">Selecciona barrio</option>
+                            {barriosFiltrados.map(barrio=>(
+                                <option key={barrio.idBarrio} value={barrio.idBarrio}>{barrio.barrio}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
 
-                <div className="col-12">
-                    <br/>
-                    Dirección
+                <div className="col-12 my-2">
+                    <label>Dirección:</label>
                     <PlacesAutocomplete value={formValues.direccion} onChange={handleChangeUbicacion} onSelect={handleSelectUbicacion}>
                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                         <div>
@@ -232,26 +256,37 @@ const FormPropiedad = (props) => {
                         </div>
                     )}
                     </PlacesAutocomplete>
-                    {/* <input type="text" name="direccion" placeholder="Dirección" className="form-control" onChange={props.handleChangePrincipal} required/> */}
                 </div>
             </div>
-            <textarea name="descripcion" className="form-control mt-3" placeholder="Describa la propiedad" cols="30" rows="10" onChange={handleChange} defaultValue={formValues.descripcion}></textarea>
+            <textarea name="descripcion" className="form-control my-2" placeholder="Describa la propiedad" cols="30" rows="10" onChange={handleChange} defaultValue={formValues.descripcion}></textarea>
             <div className="row">
-                <div className="col-12 col-md-6">
-                    <br/>
-                    <input value={formValues.precio} type="text" name="precio" placeholder="Precio" className="form-control" onChange={handleChange}/>
+                <div className="col-12 col-md-6 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Precio
+                            </div>
+                        </div>
+                        <input value={formValues.precio} type="text" name="precio" placeholder="Precio" className="form-control" onChange={handleChange}/>
+                    </div>
                 </div>
-                <div className="col-12 col-md-6">
-                    <br/>
-                    <select required name="estado" className="form-control" id="" onChange={handleChange} defaultValue={formValues.estado}>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Ocupado">Ocupado</option>
-                        <option value="Reservado">Reservado</option>
-                        <option value="Alquilado">Alquilado</option>
-                        <option value="Vendido">Vendido</option>
-                    </select>
+                <div className="col-12 col-md-6 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Estado
+                            </div>
+                        </div>
+                        <select required name="estado" className="form-control" id="" onChange={handleChange} defaultValue={formValues.estado}>
+                            <option value="Disponible">Disponible</option>
+                            <option value="Ocupado">Ocupado</option>
+                            <option value="Reservado">Reservado</option>
+                            <option value="Alquilado">Alquilado</option>
+                            <option value="Vendido">Vendido</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="col-12 col-md-6 input-group mt-4">
+                <div className="col-12 col-md-6 input-group my-2">
                     <div className="input-group-prepend">
                         <div className="input-group-text">
                             Mostrar Estado en la publicación
@@ -262,12 +297,18 @@ const FormPropiedad = (props) => {
                         <option value="no">No</option>
                     </select>
                 </div>
-                <div className="col-12 col-md-6">
-                    <br/>
-                    <select required name="moneda" className="form-control" id="" onChange={handleChange} defaultValue={formValues.moneda}>
-                        <option value="dolar">Dolar</option>
-                        <option value="pesos">Pesos</option>
-                    </select>
+                <div className="col-12 col-md-6 my-2">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text">
+                                Moneda
+                            </div>
+                        </div>
+                        <select required name="moneda" className="form-control" id="" onChange={handleChange} defaultValue={formValues.moneda}>
+                            <option value="dolar">Dolar</option>
+                            <option value="pesos">Pesos</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <br/>
